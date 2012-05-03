@@ -2,20 +2,18 @@ package com.nick.android.rcflyinglocations;
 
 public class Venue {
 	
-	private int id;
-	private int longtitude;
+	private int longitude;
 	private int latitude;
 	private String name;
-	//private String description;
+	private String description;
 	private int type;
 	private String country;
 	private String city;
 	
 	
-	public Venue(int id, int longtitude, int latitude, String name, int type, String city, String country) {
+	public Venue(int longitude, int latitude, String name, String description, int type, String city, String country) {
 		
-		this.id = id;
-		this.longtitude = longtitude;
+		this.longitude = longitude;
 		this.latitude = latitude;
 		this.name = name;
 		this.type = type;
@@ -36,12 +34,12 @@ public class Venue {
 		this.name = name;
 	}
 
-	public int getLongtitude() {
-		return this.longtitude;
+	public int getlongitude() {
+		return this.longitude;
 	}
 	
-	public void setLongtitude(int longtitude) {
-		this.longtitude = longtitude;
+	public void setlongitude(int longitude) {
+		this.longitude = longitude;
 	}
 	
 	public int getLatitude() {
@@ -60,14 +58,6 @@ public class Venue {
 		this.type = type;
 	}
 	
-	public int getId() {
-		return this.id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
 	public String getCountry() {
 		return this.country;
 	}
@@ -82,6 +72,14 @@ public class Venue {
 	
 	public void setCity(String city) {
 		this.city = city;
+	}
+	
+	public String getDescription() {
+		return this.description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
 

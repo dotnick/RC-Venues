@@ -10,6 +10,7 @@ import android.widget.ImageView;
 public class MainActivity extends Activity {
 	
 	private ImageView button1;
+	private ImageView button2;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,19 @@ public class MainActivity extends Activity {
 			}
 			
 		});
+		
+		button2 = (ImageView) findViewById(R.id.button2);
+		button2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent toSearch = new Intent(MainActivity.this, SearchActivity.class);
+				startActivity(toSearch);
+			}
+			
+		});
+		
+		
 	}
 	
 	
