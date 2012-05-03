@@ -1,0 +1,41 @@
+<!-- Your package folder -->
+<com.nick.android.rcflyinglocations.DashboardLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1"
+    android:background="#ffffff" >
+
+    <!--  News Feed Button -->
+    <Button
+        android:id="@+id/btn_news_feed"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/news_feed_default"
+         />
+ 
+    <!--  Friends Button -->
+    <Button
+        android:id="@+id/btn_friends"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/friends_default"
+         />
+ 
+    <!--  Messages Button -->
+    <Button
+        android:id="@+id/btn_messages"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/messages_default"
+         />
+ 
+    <!--  Places Button -->
+    <Button
+        android:id="@+id/btn_places"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/places_default"
+         />
+ 
+    <!--  Events Button -->
+ 
+    <!--  Photos Button -->
+ 
+</com.nick.android.rcflyinglocations.DashboardLayout>
