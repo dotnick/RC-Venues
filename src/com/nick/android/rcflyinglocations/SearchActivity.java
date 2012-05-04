@@ -29,17 +29,16 @@ public class SearchActivity extends SherlockActivity {
 		ArrayList<String> venues =  dbHandler.getAllVenueNames();
 		listview_array = venues.toArray(new String[venues.size()]);
 		super.onCreate(savedInstanceState);
-		
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-	    getActionBar().setHomeButtonEnabled(true);
-	    getActionBar().setTitle("Search for venues");
 	    
 		setContentView(R.layout.search_list);
 
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    getSupportActionBar().setHomeButtonEnabled(true);
+	    getSupportActionBar().setTitle("Search for venues");
+	        
 		lv = (ListView) findViewById(R.id.ListView01);
 		et = (EditText) findViewById(R.id.EditText01);
-		lv.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, listview_array));
+		lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listview_array));
 		
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, venues);
 		lv.setAdapter(arrayAdapter); 

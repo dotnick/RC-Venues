@@ -21,13 +21,13 @@ public class VenueDetailsActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setTitle("Venue details");
         
 		setContentView(R.layout.details);
 		
+		 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	     getSupportActionBar().setHomeButtonEnabled(true);
+	     getSupportActionBar().setTitle("Venue details");
+	        
 		String venueName = this.getIntent().getStringExtra("venueName");
 		
 		venueNameTextView = (TextView) findViewById(R.id.venueName);
