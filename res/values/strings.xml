@@ -6,5 +6,12 @@
     <string name="search_hint">Search for venues...</string>
     <string name="map">Map</string>
     <string name="search">Search for venue</string>
-
+	<string name="search_main">Search</string>
+	<string name="nearby">Nearby</string>
+	<string name="about">About</string>
+	<string name="view_on_map">View on Map</string>
+	
+	
+	
+    
 </resources>

@@ -48,6 +48,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="103dp"
-        android:text="View on Map" />
+        android:text="@string/view_on_map" />
 
 </RelativeLayout>

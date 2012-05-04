@@ -1,7 +1,10 @@
 package com.nick.android.rcflyinglocations;
 
 import java.util.ArrayList;
-import android.app.Activity;
+
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends SherlockActivity {
 	private DatabaseHandler dbHandler;
 	private ListView lv;
 	private EditText et;
@@ -25,6 +28,8 @@ public class SearchActivity extends Activity {
 		ArrayList<String> venues =  dbHandler.getAllVenueNames();
 		listview_array = venues.toArray(new String[venues.size()]);
 		super.onCreate(savedInstanceState);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+	    getActionBar().setHomeButtonEnabled(true);
 		setContentView(R.layout.search_list);
 
 		lv = (ListView) findViewById(R.id.ListView01);
@@ -83,4 +88,16 @@ public class SearchActivity extends Activity {
 			
 		});
 	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
