@@ -1,6 +1,5 @@
 package com.nick.android.rcflyinglocations;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,23 +31,24 @@ public class MapsActivity extends SherlockMapActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setTitle("Map");
+        
         setContentView(R.layout.map);
+        
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         mapOverLays = mapView.getOverlays();
         marker = this.getResources().getDrawable(R.drawable.marker);
         mapOverlay = new MapOverlay(marker);
         dbHandler = new DatabaseHandler(getBaseContext());
-        try {
-			dbHandler.createDataBase();
-			dbHandler.openDataBase();
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+        
+        
+        dbHandler.openDataBase();
+        
+        
         ArrayList<Venue> venues = dbHandler.getAllVenues();
         Log.d("Number of Venues", Integer.toString(venues.size()));
         dbHandler.close();
+        
         for(int i=0; i<venues.size(); i++){
     	   GeoPoint point = new GeoPoint(venues.get(i).getlongitude(),venues.get(i).getLatitude());
     	   OverlayItem overlayItem = new OverlayItem(point, "", "");

@@ -1,5 +1,7 @@
 package com.nick.android.rcflyinglocations;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +13,19 @@ public class MainActivity extends Activity {
 
 	private Button searchButton;
 	private Button mapButton;
-
+	private DatabaseHandler dbHandler;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		dbHandler = new DatabaseHandler(this);
+		try {
+			dbHandler.createDataBase();
+			dbHandler.openDataBase();
+			dbHandler.close();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
 		this.setContentView(R.layout.fragment_layout);
 		this.searchButton = (Button) this.findViewById(R.id.btn_search);
 		this.searchButton.setOnClickListener(new OnClickListener() {

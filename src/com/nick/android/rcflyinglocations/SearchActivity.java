@@ -2,18 +2,19 @@ package com.nick.android.rcflyinglocations;
 
 import java.util.ArrayList;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 public class SearchActivity extends SherlockActivity {
 	private DatabaseHandler dbHandler;
@@ -28,8 +29,11 @@ public class SearchActivity extends SherlockActivity {
 		ArrayList<String> venues =  dbHandler.getAllVenueNames();
 		listview_array = venues.toArray(new String[venues.size()]);
 		super.onCreate(savedInstanceState);
+		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	    getActionBar().setHomeButtonEnabled(true);
+	    getActionBar().setTitle("Search for venues");
+	    
 		setContentView(R.layout.search_list);
 
 		lv = (ListView) findViewById(R.id.ListView01);
@@ -40,7 +44,9 @@ public class SearchActivity extends SherlockActivity {
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, venues);
 		lv.setAdapter(arrayAdapter); 
 		
-
+		// Remove focus from search edittext
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+	
 		et.addTextChangedListener(new TextWatcher() {
 			public void afterTextChanged(Editable s) {
 				// Abstract Method of TextWatcher Interface.

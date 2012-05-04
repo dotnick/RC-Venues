@@ -1,23 +1,31 @@
 package com.nick.android.rcflyinglocations;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class VenueDetailsActivity extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
+
+public class VenueDetailsActivity extends SherlockActivity {
 	
 	private TextView venueNameTextView;
 	private TextView venueDescriptionTextView;
 	private TextView venueCityTextView;
 	private TextView venueCountryTextView;
 	private Button viewOnMapButton;
-	DatabaseHandler dbHandler;
+	private DatabaseHandler dbHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setTitle("Venue details");
+        
 		setContentView(R.layout.details);
 		
 		String venueName = this.getIntent().getStringExtra("venueName");
@@ -38,6 +46,17 @@ public class VenueDetailsActivity extends Activity {
 		venueDescriptionTextView.setText(venue.getDescription());
 	}
 	
+	public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, SearchActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 	
 
 }
