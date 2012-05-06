@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -26,8 +27,8 @@ public class SearchActivity extends SherlockActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		dbHandler = new DatabaseHandler(this);
-		ArrayList<String> venues =  dbHandler.getAllVenueNames();
-		listview_array = venues.toArray(new String[venues.size()]);
+		listview_array = dbHandler.getVenueStrings();
+	
 		super.onCreate(savedInstanceState);
 	    
 		setContentView(R.layout.search_list);
@@ -40,7 +41,7 @@ public class SearchActivity extends SherlockActivity {
 		et = (EditText) findViewById(R.id.EditText01);
 		lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listview_array));
 		
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, venues);
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, listview_array);
 		lv.setAdapter(arrayAdapter); 
 		
 		// Remove focus from search edittext
@@ -60,17 +61,18 @@ public class SearchActivity extends SherlockActivity {
 					int count) {
 				textlength = et.getText().length();
 				array_sort.clear();
+				String st = et.getText().toString();
 				for (int i = 0; i < listview_array.length; i++) {
-					if (textlength <= listview_array[i].length()) {
-						if (et.getText()
-								.toString()
-								.equalsIgnoreCase(
-										(String) listview_array[i].subSequence(
-												0, textlength))) {
-							array_sort.add(listview_array[i]);
-						}
-					}
-				}
+		            if(s.length() <= listview_array[i].length()) {
+		                String[] wordArray = listview_array[i].split(" ");
+		                for (int j = 0; j < wordArray.length; j++){
+		                    if(wordArray[j].toLowerCase().contains(st.toLowerCase())){
+		                    	array_sort.add(listview_array[i]);
+		                        break; 
+		                    }
+		                }
+		            }
+		        }
 				lv.setAdapter(new ArrayAdapter<String>(SearchActivity.this,
 						android.R.layout.simple_list_item_1, array_sort));
 			}
@@ -81,12 +83,16 @@ public class SearchActivity extends SherlockActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
-				String venueName = (String) lv.getItemAtPosition(position);
+				
+				// Hack to get original venue id
+				String venueText = (String) lv.getItemAtPosition(position);
+				String [] s = venueText.split("\\.", 2);
+				Log.d("ID", s[0]);
+				int id = Integer.parseInt(s[0]);
 				
 				Intent toVenueDetails = new Intent(SearchActivity.this, VenueDetailsActivity.class);
-				toVenueDetails.putExtra("venueName", venueName);
+				toVenueDetails.putExtra("id", id);
 				startActivity(toVenueDetails);
-			
 			}
 
 		

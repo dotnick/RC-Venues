@@ -1,8 +1,11 @@
 package com.nick.android.rcflyinglocations;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -12,9 +15,8 @@ public class VenueDetailsActivity extends SherlockActivity {
 	
 	private TextView venueNameTextView;
 	private TextView venueDescriptionTextView;
-	private TextView venueCityTextView;
-	private TextView venueCountryTextView;
-	private Button viewOnMapButton;
+	private TextView venueAddressTextView;
+	private ImageView viewOnMapButton;
 	private DatabaseHandler dbHandler;
 
 	@Override
@@ -28,22 +30,33 @@ public class VenueDetailsActivity extends SherlockActivity {
 	     getSupportActionBar().setHomeButtonEnabled(true);
 	     getSupportActionBar().setTitle("Venue details");
 	        
-		String venueName = this.getIntent().getStringExtra("venueName");
+		int venueId = this.getIntent().getIntExtra("id", 0);
 		
 		venueNameTextView = (TextView) findViewById(R.id.venueName);
-		venueCityTextView = (TextView) findViewById(R.id.venueCityTextView);
-		venueCountryTextView = (TextView) findViewById(R.id.venueCountryTextView);
+		venueAddressTextView = (TextView) findViewById(R.id.venueAddressTextView);
 		venueDescriptionTextView = (TextView) findViewById(R.id.venueDescription);
-		viewOnMapButton = (Button) findViewById(R.id.viewOnMapButton);
+		viewOnMapButton = (ImageView) findViewById(R.id.btn_map);
+		
+		
 		
 		dbHandler = new DatabaseHandler(this);
 		
-		Venue venue = dbHandler.getVenueInfo(venueName);
+		final Venue venue = dbHandler.getVenueInfo(venueId);
 		
 		venueNameTextView.setText(venue.getName());
-		venueCityTextView.setText(venue.getCity());
-		venueCountryTextView.setText(venue.getCountry());
 		venueDescriptionTextView.setText(venue.getDescription());
+		
+		viewOnMapButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent toMap = new Intent(VenueDetailsActivity.this, MapsActivity.class);
+				toMap.putExtra("points", new float[] { venue.getlongitude(), venue.getLatitude()});
+				startActivity(toMap);
+				
+			}
+			
+		});
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {

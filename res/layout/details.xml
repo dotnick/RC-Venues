@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -8,46 +8,50 @@
         android:id="@+id/venueName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="30dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:text="10electric"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/venueCityTextView"
+        android:id="@+id/venueAddressTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/venueName"
-        android:layout_marginLeft="61dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Station Rd Village Hall, Cullingworth Village Hall, BRD, BD13 5,UK"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <TextView
-        android:id="@+id/venueCountryTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/venueCityTextView"
-        android:layout_alignBottom="@+id/venueCityTextView"
-        android:layout_marginLeft="46dp"
-        android:layout_toRightOf="@+id/venueCityTextView"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 
     <TextView
         android:id="@+id/venueDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-  		android:layout_centerHorizontal="true"
-        android:layout_below="@+id/venueCityTextView"
-        android:layout_marginTop="50dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <Button
-        android:id="@+id/viewOnMapButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="103dp"
-        android:text="@string/view_on_map" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.00"
+        android:text="The club prides itself on low cost family fun, where drivers of all abilities are welcome. New / younger drivers have gained experience here &amp; also race at bigger venues. At 10electric club, we have a mixture of primarily polished floor and some carpet. Occasionally our volunteer track builders will insert jumps for the buggies. The track is small and the lanes are quite narrow, this requires a lot concentration and drivers are requested to be courteous towards their opponents and marshals."
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/btn_map"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/map" 
+        android:contentDescription="map icon" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="View on map" />
+
+</LinearLayout>

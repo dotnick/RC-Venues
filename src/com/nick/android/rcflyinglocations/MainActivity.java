@@ -7,13 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
 public class MainActivity extends SherlockActivity {
 
 	private Button searchButton;
-	private Button mapButton;
+	private Button nearbyButton;
 	private DatabaseHandler dbHandler;
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +39,19 @@ public class MainActivity extends SherlockActivity {
 
 			}
 		});
-		this.mapButton = (Button) this.findViewById(R.id.btn_map);
-		this.mapButton.setOnClickListener(new OnClickListener() {
+		
+		this.nearbyButton = (Button) findViewById(R.id.btn_nearby);
+		this.nearbyButton.setOnClickListener(new OnClickListener() {
+
+			@Override
 			public void onClick(View v) {
-				Intent toMap = new Intent(MainActivity.this,
-						MapsActivity.class);
-				toMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-				startActivity(toMap);
-
+				Intent toNearby = new Intent(MainActivity.this, NearbyActivity.class);
+				startActivity(toNearby);
+				
 			}
+			
 		});
+		
+		
 	}
-
 }

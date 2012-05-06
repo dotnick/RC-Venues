@@ -2,23 +2,23 @@ package com.nick.android.rcflyinglocations;
 
 public class Venue {
 	
-	private int longitude;
-	private int latitude;
+	private float longitude;
+	private float latitude;
 	private String name;
 	private String description;
 	private int type;
-	private String country;
-	private String city;
+	private String address;
+	private int id;
 	
 	
-	public Venue(int longitude, int latitude, String name, String description, int type, String city, String country) {
+	public Venue(String name, String description, float longitude, float latitude,  int type, String address) {
 		
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.name = name;
 		this.type = type;
-		this.country = country;
-		this.city = city;
+		this.address = address;
+		
 	
 	}
 	
@@ -34,19 +34,19 @@ public class Venue {
 		this.name = name;
 	}
 
-	public int getlongitude() {
+	public float getlongitude() {
 		return this.longitude;
 	}
 	
-	public void setlongitude(int longitude) {
+	public void setlongitude(float longitude) {
 		this.longitude = longitude;
 	}
 	
-	public int getLatitude() {
+	public float getLatitude() {
 		return this.latitude;
 	}
 	
-	public void setLatitude(int latitude) {
+	public void setLatitude(float latitude) {
 		this.latitude = latitude;
 	}
 	
@@ -58,20 +58,13 @@ public class Venue {
 		this.type = type;
 	}
 	
-	public String getCountry() {
-		return this.country;
+	
+	public String getAddress() {
+		return this.address;
 	}
 	
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	
-	public String getCity() {
-		return this.city;
-	}
-	
-	public void setCity(String city) {
-		this.city = city;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	public String getDescription() {
@@ -80,6 +73,15 @@ public class Venue {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public void setID(int id) {
+		this.id = id;
+	}
+	
+	@Override
+	public String toString() {
+		return new String(this.id + ". " + this.name + " " + this.address + " ");
 	}
 }
 

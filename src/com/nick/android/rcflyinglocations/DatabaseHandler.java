@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -18,15 +20,17 @@ public class DatabaseHandler extends SQLiteOpenHelper{
  
     //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/com.nick.android.rcflyinglocations/databases/";
-    private static String DB_NAME = "venuesDB.db";
+    private static String DB_NAME = "venues.db";
     private static String TABLE_NAME = "venues";
     private SQLiteDatabase myDataBase; 
     private final Context myContext;
- 
+    private Calendar calendar;
    
     public DatabaseHandler(Context context) {
     	super(context, DB_NAME, null, 1);
         this.myContext = context;
+        calendar = new GregorianCalendar();
+        Log.d("date", Long.toString(calendar.getTimeInMillis()));
     }	
  
     public void createDataBase() throws IOException{
@@ -144,13 +148,13 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		if (cursor.moveToFirst()) {
 			do {
 				Venue venue = new Venue();
-				venue.setName(cursor.getString(0));
-				venue.setDescription(cursor.getString(1));
-				venue.setlongitude(Integer.parseInt(cursor.getString(2)));
-				venue.setLatitude(Integer.parseInt(cursor.getString(3)));
-				venue.setType(Integer.parseInt(cursor.getString(4)));
-				venue.setCountry(cursor.getString(5));
-				venue.setCity(cursor.getString(6));
+				venue.setID(cursor.getInt(0));
+				venue.setName(cursor.getString(1));
+				venue.setDescription(cursor.getString(2));
+				venue.setlongitude(Float.parseFloat(cursor.getString(3)));
+				venue.setLatitude(Float.parseFloat(cursor.getString(4)));
+				venue.setType(Integer.parseInt(cursor.getString(5)));
+				venue.setAddress(cursor.getString(6));
 				venueList.add(venue);
 			} while (cursor.moveToNext());
 		}
@@ -158,50 +162,47 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		return venueList;
 	}
 
-	public ArrayList<String> getAllVenueNames() {
-
-		ArrayList<String> venueList = new ArrayList<String>();
-		String selectQuery = "SELECT  * FROM " + TABLE_NAME;
-		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		if (cursor.moveToFirst()) {
-			do {
-				String venue = cursor.getString(0);
-				venueList.add(venue);
-			} while (cursor.moveToNext());
-		}
-		db.close();
-		return venueList;
-	}
-
-	public Venue getVenueInfo(String name) {
+	public Venue getVenueInfo(int id) {
 		Venue venue = new Venue();
-		String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE NAME=\"" + name + "\"";
+		String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE _id=\"" + id + "\"";
 		Log.d("QUERY", selectQuery);
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		cursor.moveToNext();
-		venue.setName(cursor.getString(0));
-		venue.setDescription(cursor.getString(1));
-		venue.setlongitude(Integer.parseInt(cursor.getString(2)));
-		venue.setLatitude(Integer.parseInt(cursor.getString(3)));
-		venue.setType(Integer.parseInt(cursor.getString(4)));
-		venue.setCountry(cursor.getString(5));
-		venue.setCity(cursor.getString(6));
-
+		venue.setID(cursor.getInt(0));
+		venue.setName(cursor.getString(1));
+		venue.setDescription(cursor.getString(2));
+		venue.setlongitude(cursor.getFloat(3));
+		venue.setLatitude(cursor.getFloat(4));
+		venue.setType(cursor.getInt(5));
+		venue.setAddress(cursor.getString(6));
 		db.close();
 		return venue;
 
 	}
 
 	public int getVenueCount() {
+		
 		String countQuery = "SELECT * FROM " + TABLE_NAME;
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
+		int count = cursor.getCount();
 		cursor.close();
-
-		return cursor.getCount();
+		db.close();
+		return count;
+	}
+	
+	public String[] getVenueStrings() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		int count = this.getVenueCount();
+		String[] venues = new String[count];
+		ArrayList venuesAL = this.getAllVenues();
+		db.close();
+		
+		for(int i=0; i<count; i++) {
+			venues[i] = venuesAL.get(i).toString();
+		}
+		return venues;
 	}
  
 }

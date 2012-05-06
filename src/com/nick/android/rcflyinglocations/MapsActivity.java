@@ -1,13 +1,10 @@
 package com.nick.android.rcflyinglocations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
-
 import com.actionbarsherlock.app.SherlockMapActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.maps.GeoPoint;
@@ -22,7 +19,6 @@ public class MapsActivity extends SherlockMapActivity {
     private List<Overlay> mapOverLays;
     private Drawable marker;
     private MapOverlay mapOverlay;
-    private DatabaseHandler dbHandler;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,29 +35,22 @@ public class MapsActivity extends SherlockMapActivity {
         mapOverLays = mapView.getOverlays();
         marker = this.getResources().getDrawable(R.drawable.marker);
         mapOverlay = new MapOverlay(marker);
-        dbHandler = new DatabaseHandler(getBaseContext());
+       
         
+        float points[] = this.getIntent().getFloatArrayExtra("points");
+    	GeoPoint point = new GeoPoint((int) (points[0] * 1E6),(int) (points[1] * 1E6));
+        OverlayItem overlayItem = new OverlayItem(point, "", "");
         
-        dbHandler.openDataBase();
-        
-        
-        ArrayList<Venue> venues = dbHandler.getAllVenues();
-        Log.d("Number of Venues", Integer.toString(venues.size()));
-        dbHandler.close();
-        
-        for(int i=0; i<venues.size(); i++){
-    	   GeoPoint point = new GeoPoint(venues.get(i).getlongitude(),venues.get(i).getLatitude());
-    	   OverlayItem overlayItem = new OverlayItem(point, "", "");
-        
-    	   mapOverlay.addOverlay(overlayItem);
-    	   mapOverLays.add(mapOverlay);
-       }
+    	mapOverlay.addOverlay(overlayItem);
+    	mapOverLays.add(mapOverlay);
+        mapView.getController().animateTo(point);
+        mapView.getController().setZoom(15);
     }
     
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, SearchActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;

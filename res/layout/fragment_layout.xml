@@ -5,15 +5,6 @@
     android:layout_weight="1"
     android:background="#eee" >
 
-    
-    <Button
-        android:id="@+id/btn_nearby"
-        style="@style/DashboardButton"
-        android:drawableTop="@drawable/compass"
-   		android:text="@string/nearby"
-         />
- 
-   
     <Button
         android:id="@+id/btn_search"
         style="@style/DashboardButton"
@@ -23,20 +14,20 @@
  
   
     <Button
-        android:id="@+id/btn_map"
+        android:id="@+id/btn_nearby"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/map"
-        android:text="@string/map"
+        android:text="@string/nearby"
          />
  
-    <!--  Places Button -->
+  
     <Button
         android:id="@+id/btn_about"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/info"
         android:text="@string/about"
+        android:paddingTop="8dp"
          />
-    <!-- Events Button -->
 
 
  
