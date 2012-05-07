@@ -19,6 +19,13 @@
         android:drawableTop="@drawable/map"
         android:text="@string/nearby"
          />
+    
+     <Button
+        android:id="@+id/btn_nearby"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/map"
+        android:text="@string/nearby"
+         />
  
   
     <Button

@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
 
 public class MainActivity extends SherlockActivity {
 
@@ -22,13 +22,11 @@ public class MainActivity extends SherlockActivity {
 		dbHandler = new DatabaseHandler(this);
 		try {
 			dbHandler.createDataBase();
-			dbHandler.openDataBase();
-			dbHandler.close();
 		} catch (IOException e) {
 			
 			e.printStackTrace();
 		}
-		this.setContentView(R.layout.fragment_layout);
+		this.setContentView(R.layout.main);
 		this.searchButton = (Button) this.findViewById(R.id.btn_search);
 		this.searchButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -46,12 +44,14 @@ public class MainActivity extends SherlockActivity {
 			@Override
 			public void onClick(View v) {
 				Intent toNearby = new Intent(MainActivity.this, NearbyActivity.class);
-				startActivity(toNearby);
-				
+				startActivity(toNearby);	
 			}
-			
 		});
-		
-		
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.about, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 }

@@ -37,7 +37,7 @@ public class MapsActivity extends SherlockMapActivity {
         mapOverlay = new MapOverlay(marker);
        
         
-        float points[] = this.getIntent().getFloatArrayExtra("points");
+        double points[] = this.getIntent().getDoubleArrayExtra("points");
     	GeoPoint point = new GeoPoint((int) (points[0] * 1E6),(int) (points[1] * 1E6));
         OverlayItem overlayItem = new OverlayItem(point, "", "");
         
@@ -50,9 +50,7 @@ public class MapsActivity extends SherlockMapActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, SearchActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+            	finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

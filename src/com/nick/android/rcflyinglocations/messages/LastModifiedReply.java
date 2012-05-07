@@ -1,7 +1,10 @@
 package com.nick.android.rcflyinglocations.messages;
 
-public class LastModifiedReply {
+import java.io.Serializable;
+
+public class LastModifiedReply implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private Long lastModified;
 	
 	public LastModifiedReply(Long lastModified) {

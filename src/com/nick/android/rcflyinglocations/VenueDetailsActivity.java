@@ -51,7 +51,7 @@ public class VenueDetailsActivity extends SherlockActivity {
 			@Override
 			public void onClick(View v) {
 				Intent toMap = new Intent(VenueDetailsActivity.this, MapsActivity.class);
-				toMap.putExtra("points", new float[] { venue.getlongitude(), venue.getLatitude()});
+				toMap.putExtra("points", new double[] { venue.getLatitude(), venue.getLongitude() });
 				startActivity(toMap);
 				
 			}
@@ -62,9 +62,7 @@ public class VenueDetailsActivity extends SherlockActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, SearchActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+            	finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

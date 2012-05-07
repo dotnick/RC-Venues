@@ -1,8 +1,13 @@
 package com.nick.android.rcflyinglocations;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 public class SearchActivity extends SherlockActivity {
@@ -100,15 +106,50 @@ public class SearchActivity extends SherlockActivity {
 		});
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.refresh, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                finish();
+                return true;
+            case R.id.refresh_btn:
+                new UpdateVenuesTask().execute(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+}
+
+
+class UpdateVenuesTask extends AsyncTask<Context, Integer, Long> {
+
+	@Override
+	protected Long doInBackground(Context... params) {
+		String TEMP_FILENAME = "db.temp";
+		DatabaseHandler dbHandler = new DatabaseHandler(params[0]);
+		byte[] result = dbHandler.checkForUpdate();
+		if(result != null) {
+			try {
+				FileOutputStream fos = params[0].openFileOutput(TEMP_FILENAME, 
+						Context.MODE_PRIVATE);
+				fos.write(result);
+				fos.flush();
+				fos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+    
+	
 }

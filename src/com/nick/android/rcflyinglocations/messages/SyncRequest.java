@@ -1,5 +1,9 @@
 package com.nick.android.rcflyinglocations.messages;
 
-public class SyncRequest {
+import java.io.Serializable;
+
+public class SyncRequest implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 }
