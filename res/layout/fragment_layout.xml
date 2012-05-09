@@ -1,41 +1,31 @@
-<com.nick.android.rcflyinglocations.DashboardLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.nick.android.rcvenues.DashboardLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_weight="1"
-    android:background="#eee" >
+    android:background="#dddddd" >
 
     <Button
         android:id="@+id/btn_search"
         style="@style/DashboardButton"
-        android:drawableTop="@drawable/search"
-        android:text="@string/search"
-         />
- 
-  
+        android:drawableTop="@drawable/btn_search"
+        android:text='@string/search' />
+
+    <Button
+        android:id="@+id/btn_weather"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/btn_weather"
+        android:text="@string/weather" />
+
+    <Button
+        android:id="@+id/btn_favourites"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/btn_favourites"
+        android:text="@string/favourites" />
+
     <Button
         android:id="@+id/btn_nearby"
         style="@style/DashboardButton"
-        android:drawableTop="@drawable/map"
-        android:text="@string/nearby"
-         />
-    
-     <Button
-        android:id="@+id/btn_nearby"
-        style="@style/DashboardButton"
-        android:drawableTop="@drawable/map"
-        android:text="@string/nearby"
-         />
- 
-  
-    <Button
-        android:id="@+id/btn_about"
-        style="@style/DashboardButton"
-        android:drawableTop="@drawable/info"
-        android:text="@string/about"
-        android:paddingTop="8dp"
-         />
+        android:drawableTop="@drawable/btn_map"
+        android:text="@string/nearby" />
 
-
- 
-</com.nick.android.rcflyinglocations.DashboardLayout>
+</com.nick.android.rcvenues.DashboardLayout>
