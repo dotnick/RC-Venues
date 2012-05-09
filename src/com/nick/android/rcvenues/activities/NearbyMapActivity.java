@@ -1,17 +1,11 @@
 package com.nick.android.rcvenues.activities;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockMapActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -19,9 +13,8 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
-import com.nick.android.rcflyinglocations.R;
 import com.nick.android.rcvenues.MapOverlay;
+import com.nick.android.rcvenues.R;
 import com.nick.android.rcvenues.database.DatabaseHandler;
 
 public class NearbyMapActivity extends SherlockMapActivity {

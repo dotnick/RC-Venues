@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.maps.GeoPoint;
-import com.nick.android.rcflyinglocations.R;
+import com.nick.android.rcvenues.R;
 import com.nick.android.rcvenues.database.DatabaseHandler;
 
 public class NearbyActivity extends SherlockActivity {

@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
-import com.nick.android.rcflyinglocations.R;
+import com.nick.android.rcvenues.R;
 import com.nick.android.rcvenues.database.DatabaseHandler;
 
 public class MainActivity extends SherlockActivity {

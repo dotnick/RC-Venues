@@ -28,7 +28,7 @@ import android.util.Log;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// The Android's default system path of your application database.
-	private static String DB_PATH = "/data/data/com.nick.android.rcflyinglocations/databases/";
+	private static String DB_PATH = "/data/data/com.nick.android.rcvenues/databases/";
 	private static String DB_NAME = "venues.db";
 	private static String TABLE_NAME = "venues";
 	private SQLiteDatabase myDataBase;

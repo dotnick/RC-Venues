@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockMapActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -12,8 +11,8 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import com.nick.android.rcflyinglocations.R;
 import com.nick.android.rcvenues.MapOverlay;
+import com.nick.android.rcvenues.R;
 
 
 public class MapsActivity extends SherlockMapActivity {
