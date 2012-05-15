@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -67,8 +68,7 @@ public class NearbyActivity extends SherlockActivity {
 			nearbyVenues = dbHandler.getNearbyVenueNames(5, currentLocation.getLongitude(), currentLocation.getLatitude());
 			
 			if(nearbyVenues.size() < 1) {
-		    	Toast.makeText(this, "No nearby venues found.", Toast.LENGTH_LONG)
-				.show();
+				((TextView) findViewById(R.id.no_nearby_venues_tv)).setText(getResources().getString(R.string.no_nearby_venues));
 		    } else {
 		    	for(Venue v : nearbyVenues) {
 		    		nearbyVenueNames.add(v.toString());
@@ -164,8 +164,12 @@ public class NearbyActivity extends SherlockActivity {
 	  }
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.view_all_on_map, menu);
+	public boolean onCreateOptionsMenu(Menu menu) {		
+		if(nearbyVenues.size()>1) {
+			menu.add(0,Menu.FIRST,Menu.NONE, "View all on map")
+			.setIcon(R.drawable.btn_show_all)
+			.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 	
