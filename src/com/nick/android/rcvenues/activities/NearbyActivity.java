@@ -58,44 +58,50 @@ public class NearbyActivity extends SherlockActivity {
 	    criteria.setAccuracy(Criteria.ACCURACY_LOW);
 	    Intent updateIntent = new Intent(SINGLE_LOCATION_UPDATE_ACTION);  
 	    singleUpatePI = PendingIntent.getBroadcast(this, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-	    currentLocation = getLastBestLocation(500, 5000);
+	    currentLocation = getLastBestLocation(5000, 5000);
 	    
 	    // Get nearby venues based on current location
 	    dbHandler = new DatabaseHandler(this);
 		dbHandler.getReadableDatabase();
-		nearbyVenues = dbHandler.getNearbyVenueNames(5, currentLocation.getLongitude(), currentLocation.getLatitude());
+		if(currentLocation != null) {
+			nearbyVenues = dbHandler.getNearbyVenueNames(5, currentLocation.getLongitude(), currentLocation.getLatitude());
+			
+			if(nearbyVenues.size() < 1) {
+		    	Toast.makeText(this, "No nearby venues found.", Toast.LENGTH_LONG)
+				.show();
+		    } else {
+		    	for(Venue v : nearbyVenues) {
+		    		nearbyVenueNames.add(v.toString());
+		    	}
+		    	
+		    	// Create listview on nearby venues
+		    	lv = (ListView) findViewById(R.id.listView_nearby);
+		    	lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nearbyVenueNames));	
+			
+				lv.setOnItemClickListener(new ListView.OnItemClickListener() {
 		
-		if(nearbyVenues.size() < 1) {
-	    	Toast.makeText(this, "No nearby venues found.", Toast.LENGTH_LONG)
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+							long arg3) {
+						
+						// Hack to get original venue id
+						String venueText = (String) lv.getItemAtPosition(position);
+						String [] s = venueText.split("\\.", 2);
+						Log.d("ID", s[0]);
+						int id = Integer.parseInt(s[0]);
+						
+						Intent toVenueDetails = new Intent(NearbyActivity.this, VenueDetailsActivity.class);
+						toVenueDetails.putExtra("id", id);
+						startActivity(toVenueDetails);
+					}	
+				});
+			  }
+		} else {
+			Toast.makeText(this, "Unable to get current location", Toast.LENGTH_LONG)
 			.show();
-	    } else {
-	    	for(Venue v : nearbyVenues) {
-	    		nearbyVenueNames.add(v.toString());
-	    	}
-	    	
-	    	// Create listview on nearby venues
-	    	lv = (ListView) findViewById(R.id.listView_nearby);
-	    	lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nearbyVenueNames));	
-		
-			lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-	
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-						long arg3) {
-					
-					// Hack to get original venue id
-					String venueText = (String) lv.getItemAtPosition(position);
-					String [] s = venueText.split("\\.", 2);
-					Log.d("ID", s[0]);
-					int id = Integer.parseInt(s[0]);
-					
-					Intent toVenueDetails = new Intent(NearbyActivity.this, VenueDetailsActivity.class);
-					toVenueDetails.putExtra("id", id);
-					startActivity(toVenueDetails);
-				}	
-			});
-		  }
+		}
 	}
+		
 	
 	private void viewNearbyOnMap() {
 		Intent toNearbyMap = new Intent(NearbyActivity.this, NearbyMapActivity.class);
