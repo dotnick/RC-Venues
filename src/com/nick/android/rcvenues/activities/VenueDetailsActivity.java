@@ -2,6 +2,7 @@ package com.nick.android.rcvenues.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -53,6 +54,7 @@ public class VenueDetailsActivity extends SherlockActivity {
 			@Override
 			public void onClick(View v) {
 				Intent toMap = new Intent(VenueDetailsActivity.this, MapsActivity.class);
+				Log.d("Venue location: " , venue.getLatitude() + " " + venue.getLongitude());
 				toMap.putExtra("points", new double[] { venue.getLatitude(), venue.getLongitude() });
 				startActivity(toMap);
 				

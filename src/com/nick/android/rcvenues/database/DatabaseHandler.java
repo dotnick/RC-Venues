@@ -160,13 +160,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			do {
 				Venue venue = new Venue();
-				venue.setID(cursor.getInt(0));
-				venue.setName(cursor.getString(1));
-				venue.setDescription(cursor.getString(2));
-				venue.setLongitude(Double.parseDouble(cursor.getString(3)));
-				venue.setLatitude(Double.parseDouble(cursor.getString(4)));
-				venue.setType(Integer.parseInt(cursor.getString(5)));
-				venue.setAddress(cursor.getString(6));
+				venue.setID(cursor.getInt(cursor.getColumnIndex("_id")));
+				venue.setName(cursor.getString(cursor.getColumnIndex("name")));
+				venue.setDescription(cursor.getString(cursor.getColumnIndex("description")));
+				venue.setLongitude(cursor.getDouble((cursor.getColumnIndex("longitude"))));
+				venue.setLatitude(cursor.getDouble((cursor.getColumnIndex("latitude"))));
+				venue.setType(cursor.getInt((cursor.getColumnIndex("type"))));
+				venue.setAddress(cursor.getString((cursor.getColumnIndex("address"))));
 				venueList.add(venue);
 			} while (cursor.moveToNext());
 		}
@@ -182,13 +182,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		cursor.moveToNext();
-		venue.setID(cursor.getInt(0));
-		venue.setName(cursor.getString(1));
-		venue.setDescription(cursor.getString(2));
-		venue.setLongitude(cursor.getFloat(3));
-		venue.setLatitude(cursor.getFloat(4));
-		venue.setType(cursor.getInt(5));
-		venue.setAddress(cursor.getString(6));
+		venue.setID(cursor.getInt(cursor.getColumnIndex("_id")));
+		venue.setName(cursor.getString(cursor.getColumnIndex("name")));
+		venue.setDescription(cursor.getString(cursor.getColumnIndex("description")));
+		venue.setLongitude(cursor.getDouble((cursor.getColumnIndex("longitude"))));
+		venue.setLatitude(cursor.getDouble((cursor.getColumnIndex("latitude"))));
+		venue.setType(cursor.getInt((cursor.getColumnIndex("type"))));
+		venue.setAddress(cursor.getString((cursor.getColumnIndex("address"))));
 		db.close();
 		return venue;
 
@@ -209,7 +209,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		int count = this.getVenueCount();
 		String[] venues = new String[count];
-		ArrayList venuesAL = this.getAllVenues();
+		ArrayList<Venue> venuesAL = this.getAllVenues();
 		db.close();
 
 		for (int i = 0; i < count; i++) {
@@ -218,34 +218,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return venues;
 	}
 
-	public ArrayList<String> getNearbyVenueNames(int limit, double longitude, double latitude) {
+	public ArrayList<Venue> getNearbyVenueNames(int limit, double longitude, double latitude) {
 		ArrayList<Venue> allVenues = this.getAllVenues();
-		ArrayList<String> nearbyVenueNames = new ArrayList<String>();
+		ArrayList<Venue> nearbyVenues = new ArrayList<Venue>();
 		for(Venue v : allVenues) {
-			if(distFrom(latitude , longitude , v.getLatitude() , v.getLongitude() , v.getName()) < 2.0) {
-				nearbyVenueNames.add(v.toString());
+			if(distFrom(latitude , longitude , v.getLatitude() , v.getLongitude() , v.getName()) < 50.0) {
+				nearbyVenues.add(v);
 			}
 		}
-		return nearbyVenueNames;
+		return nearbyVenues;
 
 	}
 
 	// Uses Haversine formula
-	public static double distFrom(double lat1, double lng1, double lat2,
-			double lng2, String name) {
-		double earthRadius = 3958.75;
-		double dLat = Math.toRadians(lat2 - lat1);
-		double dLng = Math.toRadians(lng2 - lng1);
-		double sindLat = Math.sin(dLat / 2);
-		double sindLng = Math.sin(dLng / 2);
-		double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2) * Math.cos(lat1)
-				* Math.cos(lat2);
-		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		double dist = earthRadius * c;
-		
-		Log.d("Distance from " + name +": ", Double.toString(dist));
-		return dist;
-	}
+	public static double distFrom(double lat1, double lng1, double lat2, double lng2, String name) {
+	    double earthRadius = 3958.75;
+	    
+	    double dLat = Math.toRadians(lat2-lat1);
+        double dLon = Math.toRadians(lng2-lng1);
+        
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2); 
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        double d = earthRadius * c;             
+       
+	 	return d;
+	    }
 	
 	public byte[] checkForUpdate() {
 		Socket toServer = null;

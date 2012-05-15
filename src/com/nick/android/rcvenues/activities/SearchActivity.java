@@ -70,7 +70,7 @@ public class SearchActivity extends SherlockActivity {
 				textlength = et.getText().length();
 				array_sort.clear();
 				String st = et.getText().toString();
-				for (int i = 0; i < listview_array.length; i++) {
+				for (int i = 0; i < listview_array.length; i++) { // for each item in the listView
 		            if(s.length() <= listview_array[i].length()) {
 		                String[] wordArray = listview_array[i].split(" ");
 		                for (int j = 0; j < wordArray.length; j++){

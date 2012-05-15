@@ -1,6 +1,9 @@
 package com.nick.android.rcvenues.database;
 
-public class Venue {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Venue implements Parcelable {
 	
 	private double longitude;
 	private double latitude;
@@ -10,12 +13,12 @@ public class Venue {
 	private String address;
 	private int id;
 	
-	
 	public Venue(String name, String description, double longitude, double latitude,  int type, String address) {
 		
+		this.name = name;
+		this.description = description;
 		this.longitude = longitude;
 		this.latitude = latitude;
-		this.name = name;
 		this.type = type;
 		this.address = address;
 		
@@ -83,5 +86,40 @@ public class Venue {
 	public String toString() {
 		return new String(this.id + ". " + this.name + " " + this.address + " ");
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.name);
+		dest.writeString(this.description);
+		dest.writeDouble(this.latitude);
+		dest.writeDouble(this.longitude);
+		dest.writeInt(this.type);
+		dest.writeString(this.address);
+		
+	}
+	
+	public static final Parcelable.Creator<Venue> CREATOR = new Parcelable.Creator<Venue>() {
+		public Venue createFromParcel(Parcel in) {
+			return new Venue(in);
+		}
+
+		public Venue[] newArray(int size) {
+			return new Venue[size];
+		}
+	};
+	
+	private Venue(Parcel in) {
+       this.name = in.readString();
+       this.description = in.readString();
+       this.latitude = in.readDouble();
+       this.longitude = in.readDouble();
+       this.type = in.readInt();
+       this.address = in.readString();
+    }
 }
 

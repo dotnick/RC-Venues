@@ -3,6 +3,7 @@
     package="com.nick.android.rcvenues"
     android:versionCode="1"
     android:versionName="1.0" >
+    
 	<supports-screens 
 	    android:resizeable="true"
         android:largeScreens="true" 
@@ -10,14 +11,15 @@
         android:anyDensity="true" >
 	</supports-screens>
     <uses-sdk 
-        android:minSdkVersion="7"
+        android:minSdkVersion="8"
         android:targetSdkVersion="15" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> 
     <application
         android:theme="@style/Theme.Sherlock.Light"
-        android:icon="@drawable/btn_map"
+        android:icon="@drawable/icon"
         android:label="@string/app_name" >
+        
         <uses-library android:name="com.google.android.maps" /> 
         <activity
         	android:name=".activities.MainActivity"

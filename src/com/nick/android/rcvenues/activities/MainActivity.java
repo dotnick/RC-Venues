@@ -21,6 +21,7 @@ public class MainActivity extends SherlockActivity {
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	
 		dbHandler = new DatabaseHandler(this);
 		try {
 			dbHandler.createDataBase();
@@ -32,11 +33,9 @@ public class MainActivity extends SherlockActivity {
 		this.searchButton = (Button) this.findViewById(R.id.btn_search);
 		this.searchButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent toSearch = new Intent(MainActivity.this,
-						SearchActivity.class);
+				Intent toSearch = new Intent(MainActivity.this,SearchActivity.class);
 				toSearch.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(toSearch);
-
 			}
 		});
 		
@@ -52,8 +51,10 @@ public class MainActivity extends SherlockActivity {
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) {	
 		getSupportMenuInflater().inflate(R.menu.about, menu);
-		return super.onCreateOptionsMenu(menu);
+		return super.onCreateOptionsMenu(menu);	
 	}
+	
+	
 }
