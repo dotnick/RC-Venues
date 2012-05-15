@@ -115,7 +115,7 @@ public class NearbyActivity extends SherlockActivity {
             case android.R.id.home:
             	finish();
                 return true;
-            case R.id.view_all_on_map_btn:
+            case Menu.FIRST:
             	viewNearbyOnMap();
             	return true;
             default:
