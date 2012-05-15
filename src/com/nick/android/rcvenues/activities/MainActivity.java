@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -21,7 +22,7 @@ public class MainActivity extends SherlockActivity {
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	
+			
 		dbHandler = new DatabaseHandler(this);
 		try {
 			dbHandler.createDataBase();
@@ -33,7 +34,7 @@ public class MainActivity extends SherlockActivity {
 		this.searchButton = (Button) this.findViewById(R.id.btn_search);
 		this.searchButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent toSearch = new Intent(MainActivity.this,SearchActivity.class);
+				Intent toSearch = new Intent(MainActivity.this,VenuesActivity.class);
 				toSearch.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(toSearch);
 			}

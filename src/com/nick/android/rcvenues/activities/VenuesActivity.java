@@ -25,13 +25,14 @@ import com.actionbarsherlock.view.MenuItem;
 import com.nick.android.rcvenues.R;
 import com.nick.android.rcvenues.database.DatabaseHandler;
 
-public class SearchActivity extends SherlockActivity {
+public class VenuesActivity extends SherlockActivity {
 	private DatabaseHandler dbHandler;
 	private ListView lv;
 	private EditText et;
 	private String listview_array[];
 	private ArrayList<String> array_sort = new ArrayList<String>();
 	int textlength = 0;
+	private TextWatcher tw;
 
 	public void onCreate(Bundle savedInstanceState) {
 		dbHandler = new DatabaseHandler(this);
@@ -46,23 +47,13 @@ public class SearchActivity extends SherlockActivity {
 	    getSupportActionBar().setTitle("Search for venues");
 	        
 		lv = (ListView) findViewById(R.id.ListView01);
-		et = (EditText) findViewById(R.id.EditText01);
-		lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listview_array));
 		
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, listview_array);
-		lv.setAdapter(arrayAdapter); 
-		
-		// Remove focus from search edittext
-		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-		
-		et.addTextChangedListener(new TextWatcher() {
+		tw = new TextWatcher() {
 			public void afterTextChanged(Editable s) {
-				// Abstract Method of TextWatcher Interface.
 			}
 
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// Abstract Method of TextWatcher Interface.
 			}
 
 			public void onTextChanged(CharSequence s, int start, int before,
@@ -81,10 +72,14 @@ public class SearchActivity extends SherlockActivity {
 		                }
 		            }
 		        }
-				lv.setAdapter(new ArrayAdapter<String>(SearchActivity.this,
+				lv.setAdapter(new ArrayAdapter<String>(VenuesActivity.this,
 						android.R.layout.simple_list_item_1, array_sort));
 			}
-		});
+		};
+		lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listview_array));
+		
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, listview_array);
+		lv.setAdapter(arrayAdapter); 
 		
 		lv.setOnItemClickListener(new ListView.OnItemClickListener() {
 
@@ -98,19 +93,24 @@ public class SearchActivity extends SherlockActivity {
 				Log.d("ID", s[0]);
 				int id = Integer.parseInt(s[0]);
 				
-				Intent toVenueDetails = new Intent(SearchActivity.this, VenueDetailsActivity.class);
+				Intent toVenueDetails = new Intent(VenuesActivity.this, VenueDetailsActivity.class);
 				toVenueDetails.putExtra("id", id);
 				startActivity(toVenueDetails);
-			}
-
-		
+			}	
 			
 		});
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.refresh, menu);
+		menu.add(0,Menu.FIRST,Menu.NONE, "Search")
+        .setIcon(R.drawable.btn_action_search)
+        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+		menu.add(0,Menu.FIRST+1,Menu.NONE, "Sync")
+        .setIcon(R.drawable.refresh)
+        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -123,6 +123,10 @@ public class SearchActivity extends SherlockActivity {
             case R.id.refresh_btn:
                 new UpdateVenuesTask().execute(this);
                 return true;
+            case Menu.FIRST:
+            	item.setActionView(R.layout.collapsible_search);
+            	et = (EditText) item.getActionView().findViewById(R.id.action_search);
+            	et.addTextChangedListener(tw);
             default:
                 return super.onOptionsItemSelected(item);
         }

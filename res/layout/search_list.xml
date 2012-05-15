@@ -7,13 +7,6 @@
 
     <include layout="@layout/colorstrip" />
 
-    <EditText
-        android:id="@+id/EditText01"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/search_hint" >
-    </EditText>
-
     <ListView
         android:id="@+id/ListView01"
         android:layout_width="wrap_content"

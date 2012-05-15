@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.nick.android.rcvenues.R;
 import com.nick.android.rcvenues.database.DatabaseHandler;
@@ -21,7 +23,6 @@ public class VenueDetailsActivity extends SherlockActivity {
 	private TextView venueAddressTextView;
 	private ImageView viewOnMapButton;
 	private DatabaseHandler dbHandler;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -29,9 +30,9 @@ public class VenueDetailsActivity extends SherlockActivity {
         
 		setContentView(R.layout.venue_details);
 		
-		 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	     getSupportActionBar().setHomeButtonEnabled(true);
-	     getSupportActionBar().setTitle("Venue details");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    getSupportActionBar().setHomeButtonEnabled(true);
+	    getSupportActionBar().setTitle("Venue details");
 	        
 		int venueId = this.getIntent().getIntExtra("id", 0);
 		
@@ -63,6 +64,12 @@ public class VenueDetailsActivity extends SherlockActivity {
 		});
 	}
 	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return super.onCreateOptionsMenu(menu);
+	}
+
 	public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
