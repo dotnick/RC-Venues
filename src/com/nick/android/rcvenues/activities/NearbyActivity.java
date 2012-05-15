@@ -39,7 +39,7 @@ public class NearbyActivity extends SherlockActivity {
 	private PendingIntent singleUpatePI;
 	private Criteria criteria;
 	
-	private static String SINGLE_LOCATION_UPDATE_ACTION = "com.nick.android.rcvenues.SINGLE_LOCATION_UPDATE_ACTION";
+	private static final String SINGLE_LOCATION_UPDATE_ACTION = "com.nick.android.rcvenues.SINGLE_LOCATION_UPDATE_ACTION";
 	
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,20 +47,24 @@ public class NearbyActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 	    
 		setContentView(R.layout.nearby);
-
+		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    getSupportActionBar().setHomeButtonEnabled(true);
 	    getSupportActionBar().setTitle("Nearby Venues");
+	    
+	    // Get location with low accuracy
 	    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	    criteria = new Criteria();
 	    criteria.setAccuracy(Criteria.ACCURACY_LOW);
 	    Intent updateIntent = new Intent(SINGLE_LOCATION_UPDATE_ACTION);  
 	    singleUpatePI = PendingIntent.getBroadcast(this, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	    currentLocation = getLastBestLocation(500, 5000);
-	    Log.d("Current location: ", "lat:" + currentLocation.getLatitude() + " long: " + currentLocation.getLongitude());
+	    
+	    // Get nearby venues based on current location
 	    dbHandler = new DatabaseHandler(this);
 		dbHandler.getReadableDatabase();
 		nearbyVenues = dbHandler.getNearbyVenueNames(5, currentLocation.getLongitude(), currentLocation.getLatitude());
+		
 		if(nearbyVenues.size() < 1) {
 	    	Toast.makeText(this, "No nearby venues found.", Toast.LENGTH_LONG)
 			.show();
@@ -68,13 +72,10 @@ public class NearbyActivity extends SherlockActivity {
 	    	for(Venue v : nearbyVenues) {
 	    		nearbyVenueNames.add(v.toString());
 	    	}
+	    	
+	    	// Create listview on nearby venues
 	    	lv = (ListView) findViewById(R.id.listView_nearby);
-	    	lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nearbyVenueNames));
-		
-	    	ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, nearbyVenueNames);
-	    	lv.setAdapter(arrayAdapter); 
-		
-		
+	    	lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nearbyVenueNames));	
 		
 			lv.setOnItemClickListener(new ListView.OnItemClickListener() {
 	

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,6 +38,7 @@ public class VenueDetailsActivity extends SherlockActivity {
 		venueNameTextView = (TextView) findViewById(R.id.venueName);
 		venueAddressTextView = (TextView) findViewById(R.id.venueAddressTextView);
 		venueDescriptionTextView = (TextView) findViewById(R.id.venueDescription);
+		venueAddressTextView = (TextView) findViewById(R.id.venueAddressTextView);
 		viewOnMapButton = (ImageView) findViewById(R.id.btn_map);
 		
 		
@@ -49,18 +49,17 @@ public class VenueDetailsActivity extends SherlockActivity {
 		
 		venueNameTextView.setText(venue.getName());
 		venueDescriptionTextView.setText(venue.getDescription());
+		venueAddressTextView.setText(venue.getAddress());
 		
+	
 		viewOnMapButton.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				Intent toMap = new Intent(VenueDetailsActivity.this, MapsActivity.class);
 				Log.d("Venue location: " , venue.getLatitude() + " " + venue.getLongitude());
 				toMap.putExtra("points", new double[] { venue.getLatitude(), venue.getLongitude() });
-				startActivity(toMap);
-				
+				startActivity(toMap);		
 			}
-			
 		});
 	}
 	

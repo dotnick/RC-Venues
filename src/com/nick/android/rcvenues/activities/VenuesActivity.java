@@ -13,7 +13,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -26,6 +25,7 @@ import com.nick.android.rcvenues.R;
 import com.nick.android.rcvenues.database.DatabaseHandler;
 
 public class VenuesActivity extends SherlockActivity {
+	
 	private DatabaseHandler dbHandler;
 	private ListView lv;
 	private EditText et;
@@ -44,7 +44,7 @@ public class VenuesActivity extends SherlockActivity {
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    getSupportActionBar().setHomeButtonEnabled(true);
-	    getSupportActionBar().setTitle("Search for venues");
+	    getSupportActionBar().setTitle("Venues");
 	        
 		lv = (ListView) findViewById(R.id.ListView01);
 		
@@ -77,9 +77,6 @@ public class VenuesActivity extends SherlockActivity {
 			}
 		};
 		lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listview_array));
-		
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, listview_array);
-		lv.setAdapter(arrayAdapter); 
 		
 		lv.setOnItemClickListener(new ListView.OnItemClickListener() {
 
