@@ -1,0 +1,6 @@
+
+    <resources>
+        <color name="clicked">#34b4e3</color>
+        <color name="not_clicked">#ececec</color>
+        <color name="main_text">#6a85b0</color>
+    </resources>

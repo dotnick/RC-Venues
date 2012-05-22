@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -23,7 +25,8 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall" 
+        android:layout_below="@+id/venueName"/>
 
     <TextView
         android:id="@+id/venueDescription"
@@ -32,22 +35,29 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <ImageView
-        android:id="@+id/btn_map"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:contentDescription="map icon"
-        android:src="@drawable/btn_map" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_below="@id/venueAddressTextView" />
+    	
+     <ImageView
+         android:id="@+id/btn_map"
+         android:layout_width="65dp"
+         android:layout_height="65dp"
+         android:layout_below="@+id/venueDescription"
+         android:layout_centerHorizontal="true"
+         android:contentDescription="@string/map_icon"
+         android:src="@drawable/btn_map" />
+     
+     <com.google.ads.AdView
+        android:id="@+id/adView2"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        />
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="a14fbad937de76e"
+        ads:loadAdOnCreate="true"
+        ads:testDevices="A3A5071B0D1BB0E40A120083397BC361" >
+    </com.google.ads.AdView>
 
-</LinearLayout>
+    
+    
+</RelativeLayout>

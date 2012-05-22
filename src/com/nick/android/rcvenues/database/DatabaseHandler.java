@@ -41,7 +41,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, 1);
 		this.myContext = context;
 		calendar = new GregorianCalendar();
-		Log.d("date", Long.toString(calendar.getTimeInMillis()));
 		try {
 			serverAddress = InetAddress.getByName(serverAdressString);
 		} catch (UnknownHostException e) {
@@ -167,13 +166,55 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				venue.setLatitude(cursor.getDouble((cursor.getColumnIndex("latitude"))));
 				venue.setType(cursor.getInt((cursor.getColumnIndex("type"))));
 				venue.setAddress(cursor.getString((cursor.getColumnIndex("address"))));
+				int fav = cursor.getInt(cursor.getColumnIndex("favourite"));
+				venue.setFavourite(isFavourite(fav));
 				venueList.add(venue);
 			} while (cursor.moveToNext());
 		}
 		db.close();
 		return venueList;
 	}
-
+	private boolean isFavourite(int i) {
+		return i==1;
+	}
+	
+	public void setFavourite(int id, boolean favourite) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String updateQuery;
+		
+		if(favourite) {
+			updateQuery="UPDATE " + TABLE_NAME + " set favourite=1 where _id=" + id + ";";
+		} else {
+			updateQuery="UPDATE " + TABLE_NAME + " set favourite=0 where _id=" + id + ";";
+		}
+		db.execSQL(updateQuery);
+		db.close();
+	}
+	
+	public ArrayList<Venue> getFavouriteVenues() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE favourite=1;";
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		ArrayList<Venue> favouriteVenues = new ArrayList<Venue>();
+		
+		if (cursor.moveToFirst()) {
+			do {
+				Venue venue = new Venue();
+				venue.setID(cursor.getInt(cursor.getColumnIndex("_id")));
+				venue.setName(cursor.getString(cursor.getColumnIndex("name")));
+				venue.setDescription(cursor.getString(cursor.getColumnIndex("description")));
+				venue.setLongitude(cursor.getDouble((cursor.getColumnIndex("longitude"))));
+				venue.setLatitude(cursor.getDouble((cursor.getColumnIndex("latitude"))));
+				venue.setType(cursor.getInt((cursor.getColumnIndex("type"))));
+				venue.setAddress(cursor.getString((cursor.getColumnIndex("address"))));
+				int fav = cursor.getInt(cursor.getColumnIndex("favourite"));
+				venue.setFavourite(isFavourite(fav));
+				favouriteVenues.add(venue);
+			} while (cursor.moveToNext());
+		}
+		return favouriteVenues;
+	}
+	
 	public Venue getVenueInfo(int id) {
 		Venue venue = new Venue();
 		String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE _id=\""
@@ -189,6 +230,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		venue.setLatitude(cursor.getDouble((cursor.getColumnIndex("latitude"))));
 		venue.setType(cursor.getInt((cursor.getColumnIndex("type"))));
 		venue.setAddress(cursor.getString((cursor.getColumnIndex("address"))));
+		int fav = cursor.getInt(cursor.getColumnIndex("favourite"));
+		venue.setFavourite(isFavourite(fav));
 		db.close();
 		return venue;
 

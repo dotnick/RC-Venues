@@ -8,12 +8,16 @@
     <string name="map">Map</string>
     
     <!-- Main buttons -->
-    <string name="search">Venues</string>
+    <string name="venues">Venues</string>
 	<string name="nearby">Nearby</string>
 	<string name="weather">Weather</string>
 	<string name="favourites">Favourites</string>
-	
-	<string name="view_on_map">View on Map</string>
-	
-	<string name="no_nearby_venues">No nearby venues</string>
+	<string name="view_on_map">View on Map</string>	
+	<string name="no_venue_found">\nNo venues found</string>	
+	<string name="check_weather">Check the weather</string>	
+	<string name="search_venues">Search for venues</string>	
+	<string name="search">Search</string>	
+	<string name="favourite_venues">Your favourite venues</string>
+	<string name="map_icon">Map Icon</string>
+	<string name="fav_icon">Favourites Icon</string>
 </resources>

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,42 +12,57 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.nick.android.rcvenues.R;
 import com.nick.android.rcvenues.database.DatabaseHandler;
+import com.nick.android.rcvenues.database.Venue;
 
-public class VenuesActivity extends SherlockActivity {
+public class VenuesActivity extends SherlockListActivity {
 	
 	private DatabaseHandler dbHandler;
-	private ListView lv;
 	private EditText et;
-	private String listview_array[];
-	private ArrayList<String> array_sort = new ArrayList<String>();
-	int textlength = 0;
+	private ArrayList<Venue> venueList;
+	private VenueAdapter vAdapter;
 	private TextWatcher tw;
+	private HashMap<String, Integer> venueID;
 
 	public void onCreate(Bundle savedInstanceState) {
-		dbHandler = new DatabaseHandler(this);
-		listview_array = dbHandler.getVenueStrings();
-	
+		
 		super.onCreate(savedInstanceState);
-	    
-		setContentView(R.layout.search_list);
-
+		setContentView(R.layout.venue_list);
+	
+		dbHandler = new DatabaseHandler(this);
+		dbHandler.openDataBase();
+		venueList = dbHandler.getAllVenues();
+		dbHandler.close();
+		
+		// Create a venue - Id map to retrieve info about venues from db
+		venueID = new HashMap<String, Integer>();
+		
+		for (int i=0; i<venueList.size(); i++) {
+			venueID.put(venueList.get(i).getName() + " " + venueList.get(i).getAddress(), venueList.get(i).getID());
+		}
+		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    getSupportActionBar().setHomeButtonEnabled(true);
 	    getSupportActionBar().setTitle("Venues");
 	        
-		lv = (ListView) findViewById(R.id.ListView01);
+		vAdapter = new VenueAdapter(this, R.layout.row, venueList);
+		setListAdapter(vAdapter);
 		
 		tw = new TextWatcher() {
 			public void afterTextChanged(Editable s) {
@@ -58,44 +74,33 @@ public class VenuesActivity extends SherlockActivity {
 
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				textlength = et.getText().length();
-				array_sort.clear();
-				String st = et.getText().toString();
-				for (int i = 0; i < listview_array.length; i++) { // for each item in the listView
-		            if(s.length() <= listview_array[i].length()) {
-		                String[] wordArray = listview_array[i].split(" ");
-		                for (int j = 0; j < wordArray.length; j++){
-		                    if(wordArray[j].toLowerCase().contains(st.toLowerCase())){
-		                    	array_sort.add(listview_array[i]);
-		                        break; 
-		                    }
-		                }
-		            }
-		        }
-				lv.setAdapter(new ArrayAdapter<String>(VenuesActivity.this,
-						android.R.layout.simple_list_item_1, array_sort));
+				
+				ArrayList<Venue> filterList = new ArrayList<Venue>();
+				String st = et.getText().toString().toLowerCase();
+				
+				if(s.length()==0){
+					setListAdapter(vAdapter);
+				} else {
+					for (Venue v : venueList) { 
+						ArrayList<Character> venueCharList = new ArrayList<Character>();
+						ArrayList<Character> searchCharList = new ArrayList<Character>();
+						String vStr = v.toString().toLowerCase();
+						for(int i=0; i<vStr.length(); i++){
+							venueCharList.add(vStr.charAt(i));
+						}
+						for(int i=0; i<st.length(); i++){
+							searchCharList.add(st.charAt(i));
+						}
+			            if(venueCharList.containsAll(searchCharList)){
+			            	filterList.add(v);
+			            }
+			        }		
+					VenueAdapter filterAdapter = new VenueAdapter(getBaseContext(), R.layout.row, filterList);
+					setListAdapter(filterAdapter);
+				}
 			}
 		};
-		lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listview_array));
-		
-		lv.setOnItemClickListener(new ListView.OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) {
-				
-				// Hack to get original venue id
-				String venueText = (String) lv.getItemAtPosition(position);
-				String [] s = venueText.split("\\.", 2);
-				Log.d("ID", s[0]);
-				int id = Integer.parseInt(s[0]);
-				
-				Intent toVenueDetails = new Intent(VenuesActivity.this, VenueDetailsActivity.class);
-				toVenueDetails.putExtra("id", id);
-				startActivity(toVenueDetails);
-			}	
-			
-		});
 	}
 	
 	@Override
@@ -128,6 +133,14 @@ public class VenuesActivity extends SherlockActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+	
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Intent toDetails = new Intent(VenuesActivity.this, VenueDetailsActivity.class);
+		Venue venue = (Venue) l.getItemAtPosition(position);
+		String venueKey = venue.getName() + " " + venue.getAddress();
+		toDetails.putExtra("id", venueID.get(venueKey));
+		startActivity(toDetails);
+	}
 }
 
 
@@ -153,6 +166,68 @@ class UpdateVenuesTask extends AsyncTask<Context, Integer, Long> {
 		}
 		return null;
 	}
-    
 	
+
 }
+
+class VenueAdapter extends ArrayAdapter<Venue> {
+
+    private ArrayList<Venue> venues;
+    private Context mContext;
+    private DatabaseHandler dbHandler;
+    
+    public VenueAdapter(Context context, int textViewResourceId, ArrayList<Venue> venues) {
+            super(context, textViewResourceId, venues);
+            this.venues = venues;
+            this.mContext = context;
+            dbHandler = new DatabaseHandler(context);
+    }
+    @Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		LayoutInflater inflater = (LayoutInflater) mContext
+			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		final Venue venue = venues.get(position);
+		View rowView = inflater.inflate(R.layout.row, parent, false);
+		TextView vName = (TextView) rowView.findViewById(R.id.toptext);
+		TextView vAddress = (TextView) rowView.findViewById(R.id.bottomtext);
+		final ImageView iView = (ImageView) rowView.findViewById(R.id.fav_icon);
+		vName.setText(venue.getName());;
+		vAddress.setText(venue.getAddress());
+		if(venue.isFavourite()) {
+			iView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite));
+		}
+		
+		iView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(venue.isFavourite()) {
+					venue.setFavourite(false);
+					dbHandler.setFavourite(venue.getID(), false);
+					iView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.not_favourite));
+				} else {
+					venue.setFavourite(true);
+					dbHandler.setFavourite(venue.getID(), true);
+					iView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite));
+				}
+			}
+			
+		});
+		
+		iView.setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				if(venue.isFavourite()) {
+					Toast.makeText(mContext, "Remove venue from favourites ", Toast.LENGTH_LONG).show();
+				} else{
+					Toast.makeText(mContext, "Add venue to favourites ", Toast.LENGTH_LONG).show();
+				}
+				return true;
+			}
+		});
+		
+		return rowView;
+	}
+}
+	

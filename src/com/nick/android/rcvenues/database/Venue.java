@@ -12,8 +12,9 @@ public class Venue implements Parcelable {
 	private int type;
 	private String address;
 	private int id;
+	private boolean favourite;
 	
-	public Venue(String name, String description, double longitude, double latitude,  int type, String address) {
+	public Venue(String name, String description, double longitude, double latitude,  int type, String address, boolean favourite) {
 		
 		this.name = name;
 		this.description = description;
@@ -21,7 +22,7 @@ public class Venue implements Parcelable {
 		this.latitude = latitude;
 		this.type = type;
 		this.address = address;
-		
+		this.favourite = favourite;
 	
 	}
 	
@@ -80,6 +81,18 @@ public class Venue implements Parcelable {
 	
 	public void setID(int id) {
 		this.id = id;
+	}
+	
+	public int getID() {
+		return this.id;
+	}
+	
+	public void setFavourite(boolean favourite) {
+		this.favourite = favourite;
+	}
+	
+	public boolean isFavourite() {
+		return this.favourite;
 	}
 	
 	@Override
