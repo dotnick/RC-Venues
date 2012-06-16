@@ -116,6 +116,7 @@ public class WeatherActivity extends SherlockActivity {
 		@Override
         protected void onPostExecute(Weather weather){
 			if(weather != null) {
+				weather_description.setText(weather.description);
 				temp_tv.setText(weather.temperatureC + "C");
 				wind_tv.setText(weather.windSpeedKmph + "Km/h " + weather.windDirectionPoints);
 				hum_tv.setText(weather.humidity + "%");
