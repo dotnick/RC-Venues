@@ -137,7 +137,8 @@
         android:id="@+id/adView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        ads:adSize="BANNER"
+        android:gravity="center"
+        ads:adSize="IAB_LEADERBOARD"
         ads:adUnitId="a14fbad937de76e"
         ads:loadAdOnCreate="true"
         ads:testDevices="A3A5071B0D1BB0E40A120083397BC361" >

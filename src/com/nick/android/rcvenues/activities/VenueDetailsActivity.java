@@ -12,8 +12,8 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.nick.android.rcvenues.R;
+import com.nick.android.rcvenues.Venue;
 import com.nick.android.rcvenues.database.DatabaseHandler;
-import com.nick.android.rcvenues.database.Venue;
 
 public class VenueDetailsActivity extends SherlockActivity {
 	
@@ -22,6 +22,7 @@ public class VenueDetailsActivity extends SherlockActivity {
 	private TextView venueAddressTextView;
 	private ImageView viewOnMapButton;
 	private DatabaseHandler dbHandler;
+	private int venueId;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -33,7 +34,7 @@ public class VenueDetailsActivity extends SherlockActivity {
 	    getSupportActionBar().setHomeButtonEnabled(true);
 	    getSupportActionBar().setTitle("Venue details");
 	        
-		int venueId = this.getIntent().getIntExtra("id", 0);
+		venueId = this.getIntent().getIntExtra("id", 0);
 		
 		venueNameTextView = (TextView) findViewById(R.id.venueName);
 		venueAddressTextView = (TextView) findViewById(R.id.venueAddressTextView);
@@ -41,9 +42,7 @@ public class VenueDetailsActivity extends SherlockActivity {
 		venueAddressTextView = (TextView) findViewById(R.id.venueAddressTextView);
 		viewOnMapButton = (ImageView) findViewById(R.id.btn_map);
 		
-		
-		
-		dbHandler = new DatabaseHandler(this);
+		dbHandler = DatabaseHandler.getHelper(getApplicationContext());
 		
 		final Venue venue = dbHandler.getVenueInfo(venueId);
 		
@@ -56,7 +55,7 @@ public class VenueDetailsActivity extends SherlockActivity {
 			@Override
 			public void onClick(View v) {
 				Intent toMap = new Intent(VenueDetailsActivity.this, MapsActivity.class);
-				Log.d("Venue location: " , venue.getLatitude() + " " + venue.getLongitude());
+				toMap.putExtra("id", venueId);
 				toMap.putExtra("points", new double[] { venue.getLatitude(), venue.getLongitude() });
 				startActivity(toMap);		
 			}

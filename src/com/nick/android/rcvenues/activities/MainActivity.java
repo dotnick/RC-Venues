@@ -1,7 +1,5 @@
 package com.nick.android.rcvenues.activities;
 
-import java.io.IOException;
-
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,7 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -22,7 +19,7 @@ public class MainActivity extends SherlockActivity {
 	private DatabaseHandler dbHandler;
 	private TextView venuesTopTv, venuesBottomTv, favouritesTopTv,
 			favouritesBottomTv, weatherTopTv, weatherBottomTv;
-	private TableRow venuesTr, favouritesTr, weatherTr;
+	private View venuesTr, favouritesTr, weatherTr;
 	private Button venuesBtn, favouritesBtn, weatherBtn;
 	private Typeface robotoThin;
 	private Typeface robotoMed;
@@ -32,28 +29,23 @@ public class MainActivity extends SherlockActivity {
 		robotoThin = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
 		robotoMed = Typeface.createFromAsset(getAssets(), "Roboto-Medium.ttf");
 		dbHandler = new DatabaseHandler(this);
-		try {
-			dbHandler.createDataBase();
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
+		dbHandler.createdatabase();
 		this.setContentView(R.layout.main);
 
 		venuesBtn = (Button) findViewById(R.id.venues_btn);
 		venuesTopTv = (TextView) findViewById(R.id.venues_top_tv);
 		venuesBottomTv = (TextView) findViewById(R.id.venues_bottom_tv);
-		venuesTr = (TableRow) findViewById(R.id.venues_tr);
+		venuesTr = (View) findViewById(R.id.venues_tr);
 
 		favouritesBtn = (Button) findViewById(R.id.favourites_btn);
 		favouritesTopTv = (TextView) findViewById(R.id.favourites_top_tv);
 		favouritesBottomTv = (TextView) findViewById(R.id.favourites_bottom_tv);
-		favouritesTr = (TableRow) findViewById(R.id.favourites_tr);
+		favouritesTr = (View) findViewById(R.id.favourites_tr);
 
 		weatherBtn = (Button) findViewById(R.id.weather_btn);
 		weatherTopTv = (TextView) findViewById(R.id.weather_top_tv);
 		weatherBottomTv = (TextView) findViewById(R.id.weather_bottom_tv);
-		weatherTr = (TableRow) findViewById(R.id.weather_tr);
+		weatherTr = (View) findViewById(R.id.weather_tr);
 
 		venuesTopTv.setTypeface(robotoThin);
 		favouritesTopTv.setTypeface(robotoThin);
@@ -312,6 +304,8 @@ public class MainActivity extends SherlockActivity {
 	}
 
 	public void toWeather() {
-		// TODO
+		Intent toWeather = new Intent(MainActivity.this,
+				WeatherVenueSelect.class);
+		startActivity(toWeather);
 	}
 }

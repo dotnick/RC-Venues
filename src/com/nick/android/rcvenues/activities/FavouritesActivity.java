@@ -7,11 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.nick.android.rcvenues.R;
+import com.nick.android.rcvenues.Venue;
 import com.nick.android.rcvenues.database.DatabaseHandler;
-import com.nick.android.rcvenues.database.Venue;
 
 public class FavouritesActivity extends SherlockListActivity {
 	
@@ -29,8 +30,7 @@ public class FavouritesActivity extends SherlockListActivity {
 	    getSupportActionBar().setHomeButtonEnabled(true);
 	    getSupportActionBar().setTitle("Favourite Venues");
 	    
-		dbHandler = new DatabaseHandler(this);
-		dbHandler.openDataBase();
+		dbHandler = DatabaseHandler.getHelper(getApplicationContext());
 		favouriteVenues = dbHandler.getFavouriteVenues();
 		dbHandler.close();
 		

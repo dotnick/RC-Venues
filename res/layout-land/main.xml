@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:id="@+id/tablelayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ececec"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="wrap_content"
+        layout="@layout/colorstrip" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.95"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.33" 
+           android:layout_gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:orientation="vertical"
+                android:id="@+id/venues_tr" >
+
+                <Button
+                    android:id="@+id/venues_btn"
+                    style="@style/DashboardButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/btn_map"
+                    android:gravity="top" />
+
+                <TextView
+                    android:id="@+id/venues_top_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/venues"
+                    android:textColor="@color/main_text"
+                    android:textSize="30dip" />
+
+                <TextView
+                    android:id="@+id/venues_bottom_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/search_venues"
+                    android:textColor="@color/main_text"
+                    android:textSize="15dip" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:id="@+id/favourites_tr" 
+             android:layout_gravity="center_vertical" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.33"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/favourites_btn"
+                    style="@style/DashboardButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/btn_favourites"
+                    android:gravity="top" />
+
+                <TextView
+                    android:id="@+id/favourites_top_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/favourites"
+                    android:textColor="@color/main_text"
+                    android:textSize="30dip" />
+
+                <TextView
+                    android:id="@+id/favourites_bottom_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/favourite_venues"
+                    android:textColor="@color/main_text"
+                    android:textSize="15dip" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33" 
+            android:id="@+id/weather_tr" 
+             android:layout_gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.33"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/weather_btn"
+                    style="@style/DashboardButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/btn_weather"
+                    android:gravity="top" />
+
+                <TextView
+                    android:id="@+id/weather_top_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/weather"
+                    android:textColor="@color/main_text"
+                    android:textSize="30dip" />
+
+                <TextView
+                    android:id="@+id/weather_bottom_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/check_weather"
+                    android:textColor="@color/main_text"
+                    android:textSize="15dip" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.ads.AdView
+        android:id="@+id/adView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="IAB_BANNER"
+        ads:adUnitId="a14fbad937de76e"
+        ads:loadAdOnCreate="true"
+        ads:testDevices="A3A5071B0D1BB0E40A120083397BC361"
+        android:gravity="center" >
+    </com.google.ads.AdView>
+
+</LinearLayout>

@@ -1,8 +1,11 @@
 package com.nick.android.rcvenues.activities;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,9 +31,11 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.nick.android.rcvenues.R;
+import com.nick.android.rcvenues.Venue;
+import com.nick.android.rcvenues.venueUpdateRequest;
 import com.nick.android.rcvenues.database.DatabaseHandler;
-import com.nick.android.rcvenues.database.Venue;
 
 public class VenuesActivity extends SherlockListActivity {
 	
@@ -39,23 +45,21 @@ public class VenuesActivity extends SherlockListActivity {
 	private VenueAdapter vAdapter;
 	private TextWatcher tw;
 	private HashMap<String, Integer> venueID;
+	private MenuItem refreshbtn;
 
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.venue_list);
-	
-		dbHandler = new DatabaseHandler(this);
-		dbHandler.openDataBase();
+		setProgress(Boolean.FALSE);
+		dbHandler= DatabaseHandler.getHelper(getApplicationContext());
 		venueList = dbHandler.getAllVenues();
-		dbHandler.close();
 		
 		// Create a venue - Id map to retrieve info about venues from db
 		venueID = new HashMap<String, Integer>();
 		
-		for (int i=0; i<venueList.size(); i++) {
-			venueID.put(venueList.get(i).getName() + " " + venueList.get(i).getAddress(), venueList.get(i).getID());
-		}
+		createVenueMap(venueList);
 		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    getSupportActionBar().setHomeButtonEnabled(true);
@@ -103,17 +107,28 @@ public class VenuesActivity extends SherlockListActivity {
 
 	}
 	
+	public void createVenueMap(ArrayList<Venue> venueList) {
+		venueID.clear();
+		for (int i=0; i<venueList.size(); i++) {
+			venueID.put(venueList.get(i).getName() + " " + venueList.get(i).getAddress(), venueList.get(i).getID());
+		}
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0,Menu.FIRST,Menu.NONE, "Search")
+		menu.add(0,Menu.FIRST+1,Menu.NONE, "Search")
         .setIcon(R.drawable.btn_action_search)
         .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
-		menu.add(0,Menu.FIRST+1,Menu.NONE, "Sync")
+		menu.add(0,Menu.FIRST+2,Menu.NONE, "Sync")
         .setIcon(R.drawable.refresh)
         .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		
 		return super.onCreateOptionsMenu(menu);
+	}
+	
+	public void setProgress(boolean status) {
+		setSupportProgressBarIndeterminateVisibility(status);
 	}
 	
 	@Override
@@ -122,10 +137,11 @@ public class VenuesActivity extends SherlockListActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.refresh_btn:
-                new UpdateVenuesTask().execute(this);
-                return true;
-            case Menu.FIRST:
+            case Menu.FIRST+2:
+            	setProgress(Boolean.TRUE);
+            	new UpdateVenuesTask().execute();
+            	return true;
+            case Menu.FIRST+1:
             	item.setActionView(R.layout.collapsible_search);
             	et = (EditText) item.getActionView().findViewById(R.id.action_search);
             	et.addTextChangedListener(tw);
@@ -141,34 +157,82 @@ public class VenuesActivity extends SherlockListActivity {
 		toDetails.putExtra("id", venueID.get(venueKey));
 		startActivity(toDetails);
 	}
-}
-
-
-class UpdateVenuesTask extends AsyncTask<Context, Integer, Long> {
-
-	@Override
-	protected Long doInBackground(Context... params) {
-		String TEMP_FILENAME = "db.temp";
-		DatabaseHandler dbHandler = new DatabaseHandler(params[0]);
-		byte[] result = dbHandler.checkForUpdate();
-		if(result != null) {
-			try {
-				FileOutputStream fos = params[0].openFileOutput(TEMP_FILENAME, 
-						Context.MODE_PRIVATE);
-				fos.write(result);
-				fos.flush();
-				fos.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
 	
-
+	private class UpdateVenuesTask extends AsyncTask<Void, Void, ArrayList<Venue>> {
+		
+		private Socket socket;
+		private ObjectInputStream ois;
+		private ObjectOutputStream oos;
+		private DatabaseHandler dbHandler1;
+		private Context mContext;
+		
+		@Override
+		protected ArrayList<Venue> doInBackground(Void... params) {
+			dbHandler1 = DatabaseHandler.getHelper(getApplicationContext());
+			mContext = getBaseContext();
+        	
+			try {
+				socket = new Socket(InetAddress.getByName("50.56.218.223"), 8080);
+				socket.setSoTimeout(5000);
+				oos = new ObjectOutputStream(socket.getOutputStream());
+				ois = new ObjectInputStream(socket.getInputStream());
+				oos.writeObject(new venueUpdateRequest(dbHandler1.getLastMod()));
+				oos.flush();
+				
+				final ArrayList<Venue> updateVenues = (ArrayList<Venue>) ois.readObject();
+				if(updateVenues != null && updateVenues.size() > 0) {
+					runOnUiThread(new Runnable() {
+						  public void run() {
+							  dbHandler1.insertVenues(updateVenues);
+								ArrayList<Venue> newList = dbHandler1.getAllVenues();
+								VenueAdapter filterAdapter = new VenueAdapter(mContext, R.layout.row, newList);
+								setListAdapter(filterAdapter);
+								createVenueMap(newList);
+								Toast.makeText(mContext, "Venues updated", Toast.LENGTH_LONG).show();
+						  }
+						});
+					
+				} else {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							Toast.makeText(mContext, "No new venues", Toast.LENGTH_SHORT).show();
+					}
+					});
+				}
+				
+			} catch (UnknownHostException e) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						Toast.makeText(mContext, "Unable to connect to venue server. Try again later.", Toast.LENGTH_LONG).show();
+						return;
+				}
+				});
+			} catch (IOException e) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						Toast.makeText(mContext, "Unable to connect to venue server. Try again later.", Toast.LENGTH_LONG).show();
+						return;
+				}
+				});
+			} catch (ClassNotFoundException e) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						Toast.makeText(mContext, "Unable to connect to venue server. Try again later.", Toast.LENGTH_LONG).show();
+						return;
+				}
+				});
+			} finally {
+				runOnUiThread(new Runnable() {
+					  public void run() {
+						  setProgress(false);
+					  }
+					});
+			}
+			return null;
+		}
+	}
 }
+
 
 class VenueAdapter extends ArrayAdapter<Venue> {
 

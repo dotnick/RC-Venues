@@ -2,10 +2,7 @@ package com.nick.android.rcvenues;
 
 import java.util.ArrayList;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.widget.Toast;
-
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 import com.readystatesoftware.mapviewballoons.BalloonItemizedOverlay;
@@ -13,12 +10,10 @@ import com.readystatesoftware.mapviewballoons.BalloonItemizedOverlay;
 public class MapOverlay extends BalloonItemizedOverlay<OverlayItem> {
 
 	private ArrayList<OverlayItem> mOverLays = new ArrayList<OverlayItem>();
-	private Context mContext;
-
 	public MapOverlay(Drawable marker, MapView mapView) {
 		super(boundCenter(marker), mapView);
 		boundCenter(marker);
-		mContext = mapView.getContext();
+		mapView.getContext();
 
 	}
 
@@ -39,8 +34,6 @@ public class MapOverlay extends BalloonItemizedOverlay<OverlayItem> {
 	
 	@Override
 	protected boolean onBalloonTap(int index, OverlayItem item) {
-	    Toast.makeText(mContext, "Overlay Item " + index + " tapped!",
-	            Toast.LENGTH_LONG).show();
 	    return true;
 	}
 
