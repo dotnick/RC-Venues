@@ -38,7 +38,7 @@
                 android:layout_weight="1"
                 android:text="@string/venues"
                 android:textColor="@color/main_text"
-                android:textSize="30dip" />
+                android:textSize="50dip" />
 
             <TextView
                 android:id="@+id/venues_bottom_tv"
@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:text="@string/search_venues"
                 android:textColor="@color/main_text"
-                android:textSize="15dip" />
+                android:textSize="35dip" />
         </LinearLayout>
     </TableRow>
 
@@ -79,7 +79,7 @@
                 android:layout_weight="1"
                 android:text="@string/favourites"
                 android:textColor="@color/main_text"
-                android:textSize="30dip" />
+                android:textSize="50dip" />
 
             <TextView
                 android:id="@+id/favourites_bottom_tv"
@@ -89,7 +89,7 @@
                 android:layout_weight="1"
                 android:text="@string/favourite_venues"
                 android:textColor="@color/main_text"
-                android:textSize="15dip" />
+                android:textSize="35dip" />
         </LinearLayout>
     </TableRow>
 
@@ -119,7 +119,7 @@
                 android:layout_weight="1"
                 android:text="@string/weather"
                 android:textColor="@color/main_text"
-                android:textSize="30dip" />
+                android:textSize="50dip" />
 
             <TextView
                 android:id="@+id/weather_bottom_tv"
@@ -129,7 +129,7 @@
                 android:layout_weight="1"
                 android:text="@string/check_weather"
                 android:textColor="@color/main_text"
-                android:textSize="15dip" />
+                android:textSize="35dip" />
         </LinearLayout>
     </TableRow>
 

@@ -5,32 +5,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Calendar;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
 import com.nick.android.rcvenues.Venue;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-	// The Android's default system path of your application database.
 	private static String DB_PATH = "/data/data/com.nick.android.rcvenues/databases/";
 	private static String DB_NAME = "venues.db";
 	private static String TABLE_NAME = "venues";
 	private static String LAST_MOD_TABLE = "mod_date";
 	private SQLiteDatabase myDataBase;
 	private final Context myContext;
-	private Calendar calendar;
-	private InetAddress serverAddress;
-	private String serverAdressString = "10.2.105.205";
 	private static DatabaseHandler instance;
 
 	public DatabaseHandler(Context context)  {
@@ -61,16 +52,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	private boolean checkdatabase() {
-		// SQLiteDatabase checkdb = null;
 		boolean checkdb = false;
 		try {
 			String myPath = DB_PATH + DB_NAME;
 			File dbfile = new File(myPath);
-			// checkdb =
-			// SQLiteDatabase.openDatabase(myPath,null,SQLiteDatabase.OPEN_READWRITE);
 			checkdb = dbfile.exists();
 		} catch (SQLiteException e) {
-			System.out.println("Database doesn't exist");
 		}
 
 		return checkdb;
@@ -78,24 +65,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	private void copydatabase() throws IOException {
 
-		// Open your local db as the input stream
 		InputStream myinput = myContext.getAssets().open(DB_NAME);
 
-		// Path to the just created empty db
-		String outfilename = DB_PATH + DB_NAME;
-
-		// Open the empty db as the output stream
 		OutputStream myoutput = new FileOutputStream(
 				"/data/data/com.nick.android.rcvenues/databases/venues.db");
 
-		// transfer byte to inputfile to outputfile
 		byte[] buffer = new byte[1024];
 		int length;
 		while ((length = myinput.read(buffer)) > 0) {
 			myoutput.write(buffer, 0, length);
 		}
 
-		// Close the streams
 		myoutput.flush();
 		myoutput.close();
 		myinput.close();
@@ -103,7 +83,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	public void opendatabase() throws SQLException {
-		// Open the database
 		String mypath = DB_PATH + DB_NAME;
 		myDataBase = SQLiteDatabase.openDatabase(mypath, null,
 				SQLiteDatabase.OPEN_READWRITE);
@@ -152,7 +131,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						.getColumnIndex("longitude"))));
 				venue.setLatitude(cursor.getDouble((cursor
 						.getColumnIndex("latitude"))));
-				venue.setType(cursor.getInt((cursor.getColumnIndex("type"))));
+				venue.setType(cursor.getString((cursor.getColumnIndex("type"))));
 				venue.setAddress(cursor.getString((cursor
 						.getColumnIndex("address"))));
 				int fav = cursor.getInt(cursor.getColumnIndex("favourite"));
@@ -200,7 +179,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						.getColumnIndex("longitude"))));
 				venue.setLatitude(cursor.getDouble((cursor
 						.getColumnIndex("latitude"))));
-				venue.setType(cursor.getInt((cursor.getColumnIndex("type"))));
+				venue.setType(cursor.getString((cursor.getColumnIndex("type"))));
 				venue.setAddress(cursor.getString((cursor
 						.getColumnIndex("address"))));
 				int fav = cursor.getInt(cursor.getColumnIndex("favourite"));
@@ -225,7 +204,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				.getColumnIndex("description")));
 		venue.setLongitude(cursor.getDouble((cursor.getColumnIndex("longitude"))));
 		venue.setLatitude(cursor.getDouble((cursor.getColumnIndex("latitude"))));
-		venue.setType(cursor.getInt((cursor.getColumnIndex("type"))));
+		venue.setType(cursor.getString((cursor.getColumnIndex("type"))));
 		venue.setAddress(cursor.getString((cursor.getColumnIndex("address"))));
 		int fav = cursor.getInt(cursor.getColumnIndex("favourite"));
 		venue.setFavourite(isFavourite(fav));
@@ -246,7 +225,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	public String[] getVenueStrings() {
-		SQLiteDatabase db = this.getWritableDatabase();
+		this.getWritableDatabase();
 		int count = this.getVenueCount();
 		String[] venues = new String[count];
 		ArrayList<Venue> venuesAL = this.getAllVenues();
@@ -255,38 +234,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			venues[i] = venuesAL.get(i).toString();
 		}
 		return venues;
-	}
-
-	public ArrayList<Venue> getNearbyVenueNames(int limit, double longitude,
-			double latitude) {
-		ArrayList<Venue> allVenues = this.getAllVenues();
-		ArrayList<Venue> nearbyVenues = new ArrayList<Venue>();
-		for (Venue v : allVenues) {
-			if (distFrom(latitude, longitude, v.getLatitude(),
-					v.getLongitude(), v.getName()) < 50.0) {
-				nearbyVenues.add(v);
-			}
-		}
-		return nearbyVenues;
-
-	}
-
-	// Uses Haversine formula
-	public static double distFrom(double lat1, double lng1, double lat2,
-			double lng2, String name) {
-		double earthRadius = 3958.75;
-
-		double dLat = Math.toRadians(lat2 - lat1);
-		double dLon = Math.toRadians(lng2 - lng1);
-
-		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-				+ Math.cos(Math.toRadians(lat1))
-				* Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
-				* Math.sin(dLon / 2);
-		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		double d = earthRadius * c;
-
-		return d;
 	}
 
 	public long getLastMod() {
@@ -312,8 +259,47 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		String modTimeUpdate = "update mod_date set mod_date="
 				+ System.currentTimeMillis() / 1000 + " where id=1;";
-		System.out.println(modTimeUpdate);
 		db.execSQL(modTimeUpdate);
-
+	}
+	
+	public ArrayList<Venue> getFilteredVenues(boolean[] selectedFilters) {
+		String[] types = { "Air", "Ground", "Water" };
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = null;
+		boolean first = true;
+		for(int i=0; i< selectedFilters.length; i++) {
+			if(selectedFilters[i]) {
+				if(first) {
+					query = "SELECT * FROM " + TABLE_NAME + " WHERE type='" + types[i] + "'";
+					first = false;
+				} else {
+					query += " OR type='" + types[i] + "'";
+				}
+			}
+		}
+		ArrayList<Venue> venues = new ArrayList<Venue>();
+		if(query != null) {
+			Cursor cursor = db.rawQuery(query, null);
+			if (cursor.moveToFirst()) {
+				do {
+					Venue venue = new Venue();
+					venue.setID(cursor.getInt(cursor.getColumnIndex("_id")));
+					venue.setName(cursor.getString(cursor.getColumnIndex("name")));
+					venue.setDescription(cursor.getString(cursor
+							.getColumnIndex("description")));
+					venue.setLongitude(cursor.getDouble((cursor
+							.getColumnIndex("longitude"))));
+					venue.setLatitude(cursor.getDouble((cursor
+							.getColumnIndex("latitude"))));
+					venue.setType(cursor.getString((cursor.getColumnIndex("type"))));
+					venue.setAddress(cursor.getString((cursor
+							.getColumnIndex("address"))));
+					int fav = cursor.getInt(cursor.getColumnIndex("favourite"));
+					venue.setFavourite(isFavourite(fav));
+					venues.add(venue);
+				} while (cursor.moveToNext());
+			}
+		}
+		return venues;
 	}
 }

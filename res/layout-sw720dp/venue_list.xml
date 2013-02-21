@@ -10,7 +10,7 @@
          android:id="@+id/cs"  />
 
     <ListView
-        android:id="@+id/android:list"
+        android:id="@+id/venue_lv"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/adView2" 

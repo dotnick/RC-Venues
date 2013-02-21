@@ -9,7 +9,7 @@
     <include layout="@layout/colorstrip" />
 
     <ListView
-        android:id="@+id/android:list"
+        android:id="@+id/venue_lv"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/adView2" />
@@ -28,6 +28,7 @@
         ads:adSize="BANNER"
         ads:adUnitId="a14fbad937de76e"
         ads:loadAdOnCreate="true"
+        android:gravity="center"
         ads:testDevices="A3A5071B0D1BB0E40A120083397BC361" >
     </com.google.ads.AdView>
 

@@ -50,7 +50,7 @@
                     android:layout_gravity="center"
                     android:text="@string/venues"
                     android:textColor="@color/main_text"
-                    android:textSize="30dip" />
+                    android:textSize="40dip" />
 
                 <TextView
                     android:id="@+id/venues_bottom_tv"
@@ -59,7 +59,7 @@
                     android:layout_gravity="center"
                     android:text="@string/search_venues"
                     android:textColor="@color/main_text"
-                    android:textSize="15dip" />
+                    android:textSize="25dip" />
             </LinearLayout>
         </LinearLayout>
 
@@ -91,7 +91,7 @@
                     android:layout_gravity="center"
                     android:text="@string/favourites"
                     android:textColor="@color/main_text"
-                    android:textSize="30dip" />
+                    android:textSize="40dip" />
 
                 <TextView
                     android:id="@+id/favourites_bottom_tv"
@@ -100,7 +100,7 @@
                     android:layout_gravity="center"
                     android:text="@string/favourite_venues"
                     android:textColor="@color/main_text"
-                    android:textSize="15dip" />
+                    android:textSize="25dip" />
             </LinearLayout>
         </LinearLayout>
 
@@ -132,7 +132,7 @@
                     android:layout_gravity="center"
                     android:text="@string/weather"
                     android:textColor="@color/main_text"
-                    android:textSize="30dip" />
+                    android:textSize="40dip" />
 
                 <TextView
                     android:id="@+id/weather_bottom_tv"
@@ -141,7 +141,7 @@
                     android:layout_gravity="center"
                     android:text="@string/check_weather"
                     android:textColor="@color/main_text"
-                    android:textSize="15dip" />
+                    android:textSize="25dip" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -150,7 +150,7 @@
         android:id="@+id/adView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        ads:adSize="IAB_BANNER"
+        ads:adSize="IAB_LEADERBOARD"
         ads:adUnitId="a14fbad937de76e"
         ads:loadAdOnCreate="true"
         ads:testDevices="A3A5071B0D1BB0E40A120083397BC361"

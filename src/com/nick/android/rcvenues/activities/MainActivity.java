@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.nick.android.rcvenues.R;
 import com.nick.android.rcvenues.database.DatabaseHandler;
 
@@ -56,15 +56,38 @@ public class MainActivity extends SherlockActivity {
 		weatherBottomTv.setTypeface(robotoMed);
 
 		setUpListeners();
+
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(0, Menu.FIRST, Menu.NONE, "Settings")
+				.setIcon(R.drawable.settings)
+				.setShowAsAction(
+						MenuItem.SHOW_AS_ACTION_ALWAYS
+								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		return true;
+	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case Menu.FIRST:
+			Intent settingsActivity = new Intent(this,
+					PreferencesActivity.class);
+			startActivity(settingsActivity);
+			return true;
+		default:
+			return true;
+		}
+
+	}
 
 	/*
 	 * Listeners for touch animations
 	 */
 	public void setUpListeners() {
-		
+
 		/*
 		 * Venues Button
 		 */
@@ -139,7 +162,7 @@ public class MainActivity extends SherlockActivity {
 		/*
 		 * Favourites button
 		 */
-		
+
 		favouritesBtn.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -207,7 +230,7 @@ public class MainActivity extends SherlockActivity {
 				return false;
 			}
 		});
-		
+
 		/*
 		 * Weather Button
 		 */
@@ -285,11 +308,11 @@ public class MainActivity extends SherlockActivity {
 		super.onResume();
 		venuesTr.setBackgroundResource(R.color.not_clicked);
 	}
-
+	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.about, menu);
-		return super.onCreateOptionsMenu(menu);
+	public void onPause()
+	{
+	    super.onPause();
 	}
 
 	public void toVenues() {

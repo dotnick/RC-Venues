@@ -140,6 +140,7 @@
         ads:adSize="BANNER"
         ads:adUnitId="a14fbad937de76e"
         ads:loadAdOnCreate="true"
+        android:gravity="center"
         ads:testDevices="A3A5071B0D1BB0E40A120083397BC361" >
     </com.google.ads.AdView>
 

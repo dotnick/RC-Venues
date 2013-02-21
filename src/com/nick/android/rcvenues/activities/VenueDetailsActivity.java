@@ -2,7 +2,7 @@ package com.nick.android.rcvenues.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -20,9 +20,10 @@ public class VenueDetailsActivity extends SherlockActivity {
 	private TextView venueNameTextView;
 	private TextView venueDescriptionTextView;
 	private TextView venueAddressTextView;
-	private ImageView viewOnMapButton;
+	private ImageView viewOnMapButton, viewWeatherButton;
 	private DatabaseHandler dbHandler;
 	private int venueId;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -41,13 +42,14 @@ public class VenueDetailsActivity extends SherlockActivity {
 		venueDescriptionTextView = (TextView) findViewById(R.id.venueDescription);
 		venueAddressTextView = (TextView) findViewById(R.id.venueAddressTextView);
 		viewOnMapButton = (ImageView) findViewById(R.id.btn_map);
+		viewWeatherButton = (ImageView) findViewById(R.id.btn_weather);
 		
 		dbHandler = DatabaseHandler.getHelper(getApplicationContext());
 		
 		final Venue venue = dbHandler.getVenueInfo(venueId);
-		
 		venueNameTextView.setText(venue.getName());
 		venueDescriptionTextView.setText(venue.getDescription());
+		venueDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
 		venueAddressTextView.setText(venue.getAddress());
 		
 	
@@ -60,6 +62,25 @@ public class VenueDetailsActivity extends SherlockActivity {
 				startActivity(toMap);		
 			}
 		});
+		
+		viewWeatherButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent toWeather = new Intent(VenueDetailsActivity.this, WeatherActivity.class);
+				toWeather.putExtra("id", venueId);
+				startActivity(toWeather);		
+			}
+		});
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
 	}
 	
 	

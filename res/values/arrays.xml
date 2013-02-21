@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="units">
+        <item>"Metric (Celcius, Km/H)"</item>
+        <item>"Imperial (Fahrenheit, MPH)</item>
+    </string-array>
+    
+     <string-array name="unitValues">
+        <item>"Metric"</item>
+        <item>"Imperial"</item>
+    </string-array>
+</resources>

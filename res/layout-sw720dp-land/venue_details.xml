@@ -1,65 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ececec" >
+    android:background="#ececec"
+    android:orientation="vertical" >
 
-    <include layout="@layout/colorstrip" />
+    <include
+        android:layout_weight="0.25"
+        layout="@layout/colorstrip" />
 
     <TextView
         android:id="@+id/venueName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:gravity="center"
-        android:paddingTop="10dp"
+        android:paddingTop="20dp"
+        android:text="Venue Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/venueAddressTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/venueName"
         android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceSmall" 
-        android:layout_below="@+id/venueName"/>
+        android:paddingTop="10dp"
+        android:text="Venue Street Address"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/venueDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_below="@id/venueAddressTextView" />
-    	
-     <ImageView
-         android:id="@+id/btn_map"
-         android:layout_width="65dp"
-         android:layout_height="65dp"
-         android:layout_below="@+id/venueDescription"
-         android:layout_centerHorizontal="true"
-         android:contentDescription="@string/map_icon"
-         android:src="@drawable/btn_map" />
-     
-     <com.google.ads.AdView
+        android:layout_below="@id/venueAddressTextView"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:text="Venue Long Description"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/btn_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/map_icon"
+            android:layout_marginRight="100dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/btn_map" />
+
+        <ImageView
+            android:id="@+id/btn_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:src="@drawable/btn_weather" />
+    </LinearLayout>
+
+    <com.google.ads.AdView
         android:id="@+id/adView2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        ads:adSize="IAB_BANNER"
-        android:gravity="center"
+        ads:adSize="IAB_LEADERBOARD"
         ads:adUnitId="a14fbad937de76e"
         ads:loadAdOnCreate="true"
-        ads:testDevices="A3A5071B0D1BB0E40A120083397BC361" >
+        ads:testDevices="A3A5071B0D1BB0E40A120083397BC361"
+        android:gravity="center" >
     </com.google.ads.AdView>
 
-    
-    
-</RelativeLayout>
+</LinearLayout>

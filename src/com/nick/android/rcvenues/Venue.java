@@ -12,12 +12,12 @@ public class Venue implements Parcelable,Serializable {
 	private double latitude;
 	private String name;
 	private String description;
-	private int type;
+	private String type;
 	private String address;
 	private int id;
 	private boolean favourite;
 
-	public Venue(String name, String description, double longitude, double latitude,  int type, String address, boolean favourite) {
+	public Venue(String name, String description, double longitude, double latitude,  String type, String address, boolean favourite) {
 
 		this.name = name;
 		this.description = description;
@@ -57,11 +57,11 @@ public class Venue implements Parcelable,Serializable {
 		this.latitude = d;
 	}
 
-	public int getType() {
+	public String getType() {
 		return this.type;
 	}
 
-	public void setType(int type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -114,7 +114,7 @@ public class Venue implements Parcelable,Serializable {
 		dest.writeString(this.description);
 		dest.writeDouble(this.latitude);
 		dest.writeDouble(this.longitude);
-		dest.writeInt(this.type);
+		dest.writeString(this.type);
 		dest.writeString(this.address);
 
 	}
@@ -134,7 +134,8 @@ public class Venue implements Parcelable,Serializable {
        this.description = in.readString();
        this.latitude = in.readDouble();
        this.longitude = in.readDouble();
-       this.type = in.readInt();
+       this.type = in.readString();
        this.address = in.readString();
     }
+
 }
